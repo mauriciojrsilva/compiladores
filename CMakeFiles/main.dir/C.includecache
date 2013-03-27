@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cuca/Downloads/etapa1/lexer.c
+stdio.h
+-
+string.h
+-
+errno.h
+-
+stdlib.h
+-
+inttypes.h
+-
+tokens.h
+/home/cuca/Downloads/etapa1/tokens.h
+stdio.h
+/home/cuca/Downloads/etapa1/stdio.h
+unistd.h
+-
+
+/home/cuca/Downloads/etapa1/tokens.h
+

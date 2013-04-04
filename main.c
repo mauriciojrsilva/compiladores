@@ -15,11 +15,14 @@ int getLineNumber (void)
 
 int main (int argc, char **argv)
 {
-  	int token;
-	
-  	while (token = yylex()) {
-    	printf ("token < %d > at %d\n", token, getLineNumber());
+  	int token = yylex();
+
+  	while (running) {
+    	printf ("token  %d - %s linha %d\n", token, yytext, getLineNumber());
+    	token = yylex();
   	}
-  	
+
+  	hash_print();
+
   	return 0;
 }

@@ -1,6 +1,18 @@
 %{
 #include "tokens.h"
+#include "hash.c"
+
+int running = 1;
+int numeroLinha = 1;
+
 %}
+
+%x COMM
+
+letra                                                                           [A-Za-z_]
+digito                                                                          [0-9]
+
+
 %%
 inteiro       																	{ return TK_PR_INTEIRO;   	}
 flutuante     																	{ return TK_PR_FLUTUANTE; 	}
@@ -16,6 +28,9 @@ entrada       																	{ return TK_PR_ENTRADA; 	}
 saida         																	{ return TK_PR_SAIDA; 		}
 retorna       																	{ return TK_PR_RETORNA; 	}
 
+"verdadeiro"				                                                    { hash_insert(TK_LIT_VERDADEIRO, yytext);return TK_LIT_VERDADEIRO;}
+"falso"				                                                            { hash_insert(TK_LIT_FALSO, yytext);return TK_LIT_FALSO;}
+
 "<="          																	{ return TK_OC_LE;  		}
 ">="          																	{ return TK_OC_GE;  		}
 "=="          																	{ return TK_OC_EQ;  		}
@@ -23,10 +38,38 @@ retorna       																	{ return TK_PR_RETORNA; 	}
 "&&"          																	{ return TK_OC_AND; 		}
 "||"          																	{ return TK_OC_OR;  		}
 
-","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$"		{ return yytext[0];			} 
+","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$"		{ return yytext[0];			}
 
-[a-zA-Z][a-zA-Z0-9_]*															{ return TK_IDENTIFICADOR;  }         
+{letra}({letra}|{digito})*														{ hash_insert(IK_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR;  }
+-?{digito}+																		{ hash_insert(TK_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO;}
+-?{digito}+"."{digito}+															{ hash_insert(TK_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE;}
+\'.\'																			{ hash_insert(TK_LIT_CARACTERE, yytext); return TK_LIT_CARACTERE;}
+\"[^"]*\"																		{ hash_insert(TK_LIT_CADEIA, yytext); return TK_LIT_CADEIA;}
 
-" "           																	{ }
-.             																	{ return TOKEN_ERRO;      	}
+"//".*							                                                {}
+
+"/*"							                                                { BEGIN(COMM);}
+<COMM>"*/"						                                                { BEGIN(INITIAL);}
+<COMM>"\n"						                                                { numeroLinha++;}
+<COMM>.
+
+\n								                                                { numeroLinha++;}
+[ \t]							                                                {}
+.								                                                { printf("Erro na linha %d: %s\n", numeroLinha, yytext); return TOKEN_ERRO;}
+
 %%
+
+void initMe(void) {
+	hash_init();
+}
+
+#include "main.c"
+
+int yywrap(void){
+	running = 0;
+	return 1;
+}
+
+int getLineNumber(void) {
+	return numeroLinha;
+}

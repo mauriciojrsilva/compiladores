@@ -29,7 +29,7 @@ int main (int argc, char **argv)
   	int token = yylex();
 
   	while (running) {
-    	printf ("token  %d - %s linha %d\n", token, yytext, getLineNumber());
+    	printf ("token < %d, %s > at line %d\n", token, yytext, getLineNumber());
     	token = yylex();
   	}
 

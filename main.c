@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "tokens.h"
 
-extern FILE*yyin;
+extern FILE* yyin;
 extern char* yytext;
 extern int running;
 extern int numeroLinha;

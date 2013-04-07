@@ -1,4 +1,4 @@
-# Install script for directory: /home/cuca/Downloads/etapa1
+# Install script for directory: /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/cuca/Downloads/etapa1/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/cuca/Downloads/etapa1/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

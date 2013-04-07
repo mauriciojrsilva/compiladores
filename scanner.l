@@ -40,7 +40,7 @@ retorna       																	{ return TK_PR_RETORNA; 	}
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$"		{ return yytext[0];			}
 
-{letra}({letra}|{digito})*														{ hash_insert(IK_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR;  }
+{letra}({letra}|{digito})*														{ hash_insert(TK_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR;  }
 -?{digito}+																		{ hash_insert(TK_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO;}
 -?{digito}+"."{digito}+															{ hash_insert(TK_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE;}
 \'.\'																			{ hash_insert(TK_LIT_CARACTERE, yytext); return TK_LIT_CARACTERE;}
@@ -58,18 +58,3 @@ retorna       																	{ return TK_PR_RETORNA; 	}
 .								                                                { printf("Erro na linha %d: %s\n", numeroLinha, yytext); return TOKEN_ERRO;}
 
 %%
-
-void initMe(void) {
-	hash_init();
-}
-
-#include "main.c"
-
-int yywrap(void){
-	running = 0;
-	return 1;
-}
-
-int getLineNumber(void) {
-	return numeroLinha;
-}

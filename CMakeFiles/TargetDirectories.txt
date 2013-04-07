@@ -1,1 +1,1 @@
-/home/cuca/Downloads/etapa1/CMakeFiles/main.dir
+/home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles/main.dir

@@ -31,14 +31,11 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# Escaping for special characters.
-EQUALS = =
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cuca/Downloads/etapa1
+CMAKE_SOURCE_DIR = /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cuca/Downloads/etapa1
+CMAKE_BINARY_DIR = /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores
 
 # Include any dependencies generated for this target.
 include CMakeFiles/main.dir/depend.make
@@ -49,24 +46,19 @@ include CMakeFiles/main.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/main.dir/flags.make
 
-lexer.c: scanner.l
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cuca/Downloads/etapa1/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "[FLEX][scanner] Building scanner with flex 2.5.35"
-	/usr/bin/flex -o/home/cuca/Downloads/etapa1/lexer.c scanner.l
-
 CMakeFiles/main.dir/main.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/main.c.o: main.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cuca/Downloads/etapa1/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/main.c.o"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/main.c.o   -c /home/cuca/Downloads/etapa1/main.c
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/main.c.o   -c /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/main.c
 
 CMakeFiles/main.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/main.c.i"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -E /home/cuca/Downloads/etapa1/main.c > CMakeFiles/main.dir/main.c.i
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -E /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/main.c > CMakeFiles/main.dir/main.c.i
 
 CMakeFiles/main.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/main.c.s"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -S /home/cuca/Downloads/etapa1/main.c -o CMakeFiles/main.dir/main.c.s
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -S /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/main.c -o CMakeFiles/main.dir/main.c.s
 
 CMakeFiles/main.dir/main.c.o.requires:
 .PHONY : CMakeFiles/main.dir/main.c.o.requires
@@ -79,17 +71,17 @@ CMakeFiles/main.dir/main.c.o.provides.build: CMakeFiles/main.dir/main.c.o
 
 CMakeFiles/main.dir/lexer.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/lexer.c.o: lexer.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/cuca/Downloads/etapa1/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/lexer.c.o"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/lexer.c.o   -c /home/cuca/Downloads/etapa1/lexer.c
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/lexer.c.o   -c /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/lexer.c
 
 CMakeFiles/main.dir/lexer.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/lexer.c.i"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -E /home/cuca/Downloads/etapa1/lexer.c > CMakeFiles/main.dir/lexer.c.i
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -E /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/lexer.c > CMakeFiles/main.dir/lexer.c.i
 
 CMakeFiles/main.dir/lexer.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/lexer.c.s"
-	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -S /home/cuca/Downloads/etapa1/lexer.c -o CMakeFiles/main.dir/lexer.c.s
+	/usr/bin/gcc  $(C_DEFINES) $(C_FLAGS) -S /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/lexer.c -o CMakeFiles/main.dir/lexer.c.s
 
 CMakeFiles/main.dir/lexer.c.o.requires:
 .PHONY : CMakeFiles/main.dir/lexer.c.o.requires
@@ -99,6 +91,11 @@ CMakeFiles/main.dir/lexer.c.o.provides: CMakeFiles/main.dir/lexer.c.o.requires
 .PHONY : CMakeFiles/main.dir/lexer.c.o.provides
 
 CMakeFiles/main.dir/lexer.c.o.provides.build: CMakeFiles/main.dir/lexer.c.o
+
+lexer.c: scanner.l
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "[FLEX][scanner] Building scanner with flex 2.5.35"
+	/usr/bin/flex -o/home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/lexer.c scanner.l
 
 # Object files for target main
 main_OBJECTS = \
@@ -110,8 +107,8 @@ main_EXTERNAL_OBJECTS =
 
 main: CMakeFiles/main.dir/main.c.o
 main: CMakeFiles/main.dir/lexer.c.o
+main: /usr/lib/i386-linux-gnu/libfl.so
 main: CMakeFiles/main.dir/build.make
-main: /usr/lib/x86_64-linux-gnu/libfl.so
 main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking C executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
@@ -129,6 +126,6 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 CMakeFiles/main.dir/depend: lexer.c
-	cd /home/cuca/Downloads/etapa1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/cuca/Downloads/etapa1 /home/cuca/Downloads/etapa1 /home/cuca/Downloads/etapa1 /home/cuca/Downloads/etapa1 /home/cuca/Downloads/etapa1/CMakeFiles/main.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores /home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles/main.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/main.dir/depend
 

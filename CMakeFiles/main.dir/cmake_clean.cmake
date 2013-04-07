@@ -1,7 +1,7 @@
 FILE(REMOVE_RECURSE
-  "lexer.c"
   "CMakeFiles/main.dir/main.c.o"
   "CMakeFiles/main.dir/lexer.c.o"
+  "lexer.c"
   "main.pdb"
   "main"
 )

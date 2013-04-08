@@ -2,7 +2,6 @@
 #include "tokens.h"
 #include "hash.c"
 
-int running = 1;
 int numeroLinha = 1;
 
 %}

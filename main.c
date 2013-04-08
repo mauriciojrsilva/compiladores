@@ -8,7 +8,6 @@
 
 extern FILE* yyin;
 extern char* yytext;
-extern int running;
 extern int numeroLinha;
 
 void initMe(void) {
@@ -16,7 +15,6 @@ void initMe(void) {
 }
 
 int yywrap(void){
-	running = 0;
 	return 1;
 }
 
@@ -26,12 +24,10 @@ int getLineNumber(void) {
 
 int main (int argc, char **argv)
 {
-  	int token = yylex();
+  	int token;
 
-  	while (running) {
+  	while (token = yylex())
     	printf ("token < %d, %s > at line %d\n", token, yytext, getLineNumber());
-    	token = yylex();
-  	}
 
   	hash_print();
 

@@ -1,1 +1,5 @@
-README
+Para rodar e executar basta digitar no terminal:
+./compileAndRun.sh
+
+se quiser que o programa receba um arquivo de input basata digitar:
+./compileAndRun.sh nomedoarquivo

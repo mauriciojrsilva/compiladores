@@ -1,1 +1,0 @@
-/home/cuca/Downloads/etapa/build/CMakeFiles/main.dir

@@ -1,1 +1,0 @@
-/home/diogo/Documents/ufrgs/compiladores/trabalho/compiladores/CMakeFiles/main.dir

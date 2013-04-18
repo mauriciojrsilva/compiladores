@@ -2,7 +2,6 @@
 #include "tokens.h"
 #include "hash.c"
 
-int running = 1;
 int numeroLinha = 1;
 
 %}
@@ -57,18 +56,3 @@ retorna       																																{ return TK_PR_RETORNA; 	}
 .								                                                							{ return TOKEN_ERRO;}
 
 %%
-
-
-
-void initMe(void) {
-	hash_init();
-}
-
-int yywrap(void) {
-	running = 0;
-	return 1;
-}
-
-int getLineNumber(void) {
-	return numeroLinha;
-}

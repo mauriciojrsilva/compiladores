@@ -6,7 +6,21 @@
 #include <stdio.h>
 #include "tokens.h"
 
-extern FILE *yyin;
+extern FILE* yyin;
+extern char* yytext;
+extern int numeroLinha;
+
+void initMe(void) {
+	hash_init();
+}
+
+int yywrap(void){
+	return 1;
+}
+
+int getLineNumber(void) {
+	return numeroLinha;
+}
 
 void yyerror (char const *mensagem)
 {

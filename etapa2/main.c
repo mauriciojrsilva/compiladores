@@ -4,6 +4,7 @@
    Arquivo principal do analisador sintático.
 */
 #include <stdio.h>
+#include <stdlib.h>
 
 extern FILE* yyin;
 extern char* yytext;
@@ -29,8 +30,8 @@ void yyerror(char const *mensagem) {
 int main (int argc, char **argv)
 {
   int resultado = yyparse();
-  printf("\nPrinting hash ...\n");
-  hash_print();
+  //printf("\nPrinting hash ...\n");
+  //hash_print();
   return resultado;
 }
 

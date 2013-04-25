@@ -4,11 +4,6 @@
 %}
 
 /* Declaração dos tokens da gramática da Linguagem K */
-%union
-{
-	int	sval;
-};
-
 /* Palavras Reservadas (PR) */
 %token TK_PR_INTEIRO
 %token TK_PR_FLUTUANTE
@@ -46,97 +41,98 @@
 /* Erro */
 %token TOKEN_ERRO
 
+%left TK_OC_OR TK_OC_AND
+%left '<' '>' TK_OC_LE TK_OC_GE TK_OC_EQ TK_OC_NE
+%left '+' '-'
+%left '*' '/'
 
 %%
 /* Regras (e ações) da gramática da Linguagem K */
  
-programa : decl_global programa
+programa: decl_global programa
   | def_funcao programa
   |
   ;
 
-decl_global : decl_var ';'
+decl_global: decl_var ';'
   | decl_vetor ';'
   ;
 
-decl_var : TK_IDENTIFICADOR ':' tipo_var
+decl_var: TK_IDENTIFICADOR ':' tipo_var
   ;
 
-decl_vetor : TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']'
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']'
         ;
 
-tipo_var : TK_PR_INTEIRO
+tipo_var: TK_PR_INTEIRO
         | TK_PR_FLUTUANTE
         | TK_PR_BOOLEANO
         | TK_PR_CARACTERE
         ;
 
-def_funcao : cabecalho comando ';'
+def_funcao: cabecalho bloco_comando
   ;
   
 chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')'
 
 /* Function header - begin */
-cabecalho : TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')'
+cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')'
   ;
 
-lista_parametros : lista_parametros_nao_vazia
+lista_parametros: lista_parametros_nao_vazia
   |
   ;
 
-lista_parametros_nao_vazia : parametro ',' lista_parametros_nao_vazia
+lista_parametros_nao_vazia: parametro ',' lista_parametros_nao_vazia
   | parametro
   ;
 
-parametro : TK_IDENTIFICADOR ':' tipo_var
+parametro: TK_IDENTIFICADOR ':' tipo_var
   ;
 /* Function header - end */
 
 /* Function body - begin */
 
-comando : bloco_comando
+comando: bloco_comando
   | controle_fluxo
   | atribuicao
   | entrada
   | saida
   | retorna
+  | decl_var ';'
+  | chamada_funcao ';'
+  ;
+
+bloco_comando: '{' seq_comando '}'
+  ;
+  
+seq_comando: comando seq_comando
   |
   ;
 
-bloco_comando : '{' seq_comando '}'
-  ;
-  
-seq_comando : comando
-  | comando ';' seq_comando
-  | decl_var
-  | decl_var ';' seq_comando
-  | decl_vetor
-  | decl_vetor ';' seq_comando
+atribuicao: TK_IDENTIFICADOR '=' expressao ';'
+  | TK_IDENTIFICADOR '[' expressao ']' '=' expressao ';'
   ;
 
-atribuicao : TK_IDENTIFICADOR '=' expressao
-  | TK_IDENTIFICADOR '[' expressao ']' '=' expressao
+entrada: TK_PR_ENTRADA TK_IDENTIFICADOR ';'
   ;
 
-entrada : TK_PR_ENTRADA TK_IDENTIFICADOR
+saida: TK_PR_SAIDA lista_expressoes_nao_vazia ';'
   ;
 
-saida : TK_PR_SAIDA lista_expressoes_nao_vazia
-  ;
-
-lista_expressoes_nao_vazia : expressao ',' lista_expressoes_nao_vazia
+lista_expressoes_nao_vazia: expressao ',' lista_expressoes_nao_vazia
   | expressao
   ;
 
-retorna : TK_PR_RETORNA expressao
+retorna: TK_PR_RETORNA expressao ';'
   ;
   
-controle_fluxo : TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando
+controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando
   | TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando TK_PR_SENAO comando
   | TK_PR_ENQUANTO '(' expressao ')' comando
   ;
 
-expressao : TK_IDENTIFICADOR
+expressao: TK_IDENTIFICADOR
   | TK_IDENTIFICADOR '[' expressao ']'
   | TK_LIT_INTEIRO
   | TK_LIT_FLUTUANTE
@@ -160,7 +156,7 @@ expressao : TK_IDENTIFICADOR
   | chamada_funcao
   ;
 
-lista_expressoes : lista_expressoes_nao_vazia
+lista_expressoes: lista_expressoes_nao_vazia
   |
   ;
 /* Function body - end */

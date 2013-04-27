@@ -58,19 +58,24 @@ decl_global: decl_var ';'
   | decl_vetor ';'
   ;
 
+decl_local: decl_var ';' decl_local
+	|
+	;
+  
 decl_var: TK_IDENTIFICADOR ':' tipo_var
   ;
 
 decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']'
-        ;
+	;
 
 tipo_var: TK_PR_INTEIRO
         | TK_PR_FLUTUANTE
         | TK_PR_BOOLEANO
         | TK_PR_CARACTERE
+        | TK_PR_CADEIA
         ;
 
-def_funcao: cabecalho bloco_comando
+def_funcao: cabecalho decl_local bloco_comando
   ;
   
 chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')'

@@ -46,8 +46,8 @@ retorna { return TK_PR_RETORNA;	}
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$" { return yytext[0];	}
 
 {letra}({letra}|{digito})* { hash_insert(K_SIMBOLO_LITERAL_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
--?{digito}+ { hash_insert(K_SIMBOLO_LITERAL_INTEIRO, yytext); return TK_LIT_INTEIRO; }
--?{digito}+"."{digito}+ { hash_insert(K_SIMBOLO_LITERAL_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
+{digito}+ { hash_insert(K_SIMBOLO_LITERAL_INTEIRO, yytext); /*printf("int: %s\n", yytext);*/ return TK_LIT_INTEIRO; }
+{digito}+"."{digito}+ { hash_insert(K_SIMBOLO_LITERAL_FLUTUANTE, yytext); /*printf("float: %s\n", yytext);*/ return TK_LIT_FLUTUANTE; }
 \'.\' { hash_insert(K_SIMBOLO_LITERAL_CARACTERE, yytext); return TK_LIT_CARACTERE; }
 \"[^"]*\" { hash_insert(K_SIMBOLO_LITERAL_CADEIA, yytext); return TK_LIT_CADEIA; }
 

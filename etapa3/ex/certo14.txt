@@ -1,0 +1,9 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+minha_funcao : inteiro (k:flutuante, l:inteiro)
+v1 : flutuante;
+v2 : inteiro;
+{
+a=10;
+v[a+1]=5*b;
+}

@@ -1,0 +1,12 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+/* var : booleano; */
+variavel_caractere : caractere;
+minha_funcao : inteiro (f:flutuante, i:inteiro)
+f:flutuante;
+{
+c=0;
+}
+x=10;
+}
+variavel_caractere : caractere;

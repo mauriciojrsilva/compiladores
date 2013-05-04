@@ -1,0 +1,9 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+variavel_vetor : flutuante [15];
+f : inteiro (x : inteiro) { retorna 2 * x; }
+function : flutuante ()
+{
+a = 10;
+f(3)=f(2);
+}

@@ -1,0 +1,1 @@
+variavel_cadeia : cadeia [10];

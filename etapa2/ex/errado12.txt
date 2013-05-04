@@ -1,0 +1,14 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+/* var : booleano; */
+variavel_caractere : caractere;
+minha_funcao : inteiro ()
+{
+a=1;
+b=0;
+c='c';
+a=a+1;
+b=a+c;
+c=c-(1*1);
+entrada a,b,c;
+}

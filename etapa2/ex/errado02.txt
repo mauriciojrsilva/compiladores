@@ -1,0 +1,6 @@
+variavel_flutuante : ;
+: inteiro;
+/*
+var : booleano;
+variavel_caractere : caractere
+*/

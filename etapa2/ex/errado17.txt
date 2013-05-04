@@ -1,0 +1,12 @@
+a: inteiro ;
+b: flutuante ;
+v: caractere [15] ;
+f2 : inteiro (x : inteiro)
+{
+retorna 2* x;
+}
+my_function : flutuante ()
+{
+a=10;
+enquanto (v[a+1] != 4+1) v[a+1] = f(2)+1 ) ;
+}

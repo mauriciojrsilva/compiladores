@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 extern FILE* yyin;
+extern FILE* yyout;
 extern char* yytext;
 extern int numeroLinha;
 
@@ -27,11 +28,28 @@ void yyerror(char const *mensagem) {
   exit(1);
 }
 
-int main (int argc, char **argv)
-{
-  int resultado = yyparse();
-  //printf("\nPrinting hash ...\n");
-  //hash_print();
-  return resultado;
+int main (int argc, char **argv) {
+  
+  // verifica validade dos parâmetros de entrada
+  if(argc < 3) {
+		printf("Use main <input_file_name> <output_file_name>\n");
+		exit(1);
+	}
+	
+	// inicia a tabela hash
+	hash_init();
+	
+	// inicializa arquivos para leitura/escrita
+	yyin  = fopen(argv[1], "r");
+	yyout = fopen(argv[2], "w");
+	
+	// chama o parser...
+  yyparse();
+  
+  // fecha os arquivos
+  fclose(yyin);
+  fclose(yyout);
+
+  exit(0);
 }
 

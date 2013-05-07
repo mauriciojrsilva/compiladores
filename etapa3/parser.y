@@ -1,5 +1,7 @@
 %{
 #include <stdio.h>
+#include "ast.h"
+
 
 %}
 
@@ -46,46 +48,51 @@
 %left '+' '-'
 %left '*' '/'
 
+%type <ast> lista_expressoes seq_comando lista_parametros chamada_funcao tipo_var decl_local decl_vetor decl_var def_funcao decl_global programa s
+
 %%
 /* Regras (e ações) da gramática da Linguagem K */
+
+// criada a regra s para conseguir chamar a impressão da árvore
+s : programa																																{ $$ = $1; }
  
-programa: decl_global programa
-  | def_funcao programa
-  |
+programa: decl_global programa																							{ $$ = criarNodo(AST_PROG,  0, $1, $2, 0, 0); }
+  | def_funcao programa																											{ $$ = criarNodo(AST_PROG,  0, $1, $2, 0, 0); }
+  |																																					{ $$ = criarNodo(AST_EMPTY, 0,  0,  0, 0, 0); }
   ;
 
-decl_global: decl_var ';'
-  | decl_vetor ';'
+decl_global: decl_var ';'																										{ $$ = criarNodo(AST_DECL_GL, 0, $1,  0, 0, 0); }
+  | decl_vetor ';'																													{ $$ = criarNodo(AST_DECL_GL, 0, $1,  0, 0, 0); }
   ;
 
-decl_local: decl_var ';' decl_local
-	|
+decl_local: decl_var ';' decl_local																					{ $$ = criarNodo(AST_DECL_LOC, 0, $1, $2, 0, 0); }
+	|																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var
+decl_var: TK_IDENTIFICADOR ':' tipo_var																			{ $$ = criarNodo(AST_DECL_VAR, $1, $3, 0, 0, 0); }
   ;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']'
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']'						{ $$ = criarNodo(AST_DECL_VEC, $1, $3, criarNodo(AST_VEC_SIZE, $5,  0,  0, 0, 0), 0, 0); }
 	;
 
-tipo_var: TK_PR_INTEIRO
-        | TK_PR_FLUTUANTE
-        | TK_PR_BOOLEANO
-        | TK_PR_CARACTERE
-        | TK_PR_CADEIA
+tipo_var: TK_PR_INTEIRO																											{ $$ = criarNodo(AST_T_INT,    0,  0,  0, 0, 0); }
+        | TK_PR_FLUTUANTE																										{ $$ = criarNodo(AST_T_FLO,    0,  0,  0, 0, 0); }
+        | TK_PR_BOOLEANO																										{ $$ = criarNodo(AST_T_BOO,    0,  0,  0, 0, 0); }
+        | TK_PR_CARACTERE																										{ $$ = criarNodo(AST_T_CHA,    0,  0,  0, 0, 0); }
+        | TK_PR_CADEIA																											{ $$ = criarNodo(AST_T_STR,    0,  0,  0, 0, 0); }
         ;
 
-def_funcao: cabecalho decl_local bloco_comando
+def_funcao: cabecalho decl_local bloco_comando															{ $$ = criarNodo(AST_DEF_F,    0,  $1,  $2, $3, 0); }
   ;
   
-chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')'
+chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')'										{ $$ = criarNodo(AST_CHAM_F,   $1,  $3,  0, 0, 0); }
 
 /* Function header - begin */
-cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')'
+cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')'						//{ $$ = criarNodo(AST_,    0,  0,  0, 0, 0); }
   ;
 
 lista_parametros: lista_parametros_nao_vazia
-  |
+  |																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }
   ;
 
 lista_parametros_nao_vazia: parametro ',' lista_parametros_nao_vazia
@@ -111,9 +118,9 @@ comando: bloco_comando
 bloco_comando: '{' seq_comando '}'
   ;
   
-seq_comando: comando seq_comando
+seq_comando: comando seq_comando																						
 	| ';'
-  |
+  |																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }	
   ;
 
 atribuicao: TK_IDENTIFICADOR '=' expressao ';'
@@ -165,7 +172,7 @@ expressao: TK_IDENTIFICADOR
   ;
 
 lista_expressoes: lista_expressoes_nao_vazia
-  |
+  |																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }
   ;
 /* Function body - end */
 

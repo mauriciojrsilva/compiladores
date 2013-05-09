@@ -4,6 +4,12 @@
 
 %}
 
+%union {
+        AST *astree;
+        HASH_ELEMENT *symbol;
+}
+
+
 /* Declaração dos tokens da gramática da Linguagem K */
 /* Palavras Reservadas (PR) */
 %token TK_PR_INTEIRO
@@ -29,15 +35,15 @@
 %token TK_OC_OR
 
 /* Literais (LIT) */
-%token TK_LIT_INTEIRO
-%token TK_LIT_FLUTUANTE
-%token TK_LIT_FALSO
-%token TK_LIT_VERDADEIRO
-%token TK_LIT_CARACTERE
-%token TK_LIT_CADEIA
+%token<symbol> TK_LIT_INTEIRO
+%token<symbol> TK_LIT_FLUTUANTE
+%token<symbol> TK_LIT_FALSO
+%token<symbol> TK_LIT_VERDADEIRO
+%token<symbol> TK_LIT_CARACTERE
+%token<symbol> TK_LIT_CADEIA
 
 /* Indentificador */
-%token TK_IDENTIFICADOR
+%token<symbol> TK_IDENTIFICADOR
 
 /* Erro */
 %token TOKEN_ERRO
@@ -47,7 +53,11 @@
 %left '+' '-'
 %left '*' '/'
 
-%type <ast> lista_expressoes seq_comando lista_parametros chamada_funcao tipo_var decl_local decl_vetor decl_var def_funcao decl_global programa s
+%type <astree> s programa	decl_global	decl_local	decl_var	decl_vetor	tipo_var	def_funcao	chamada_funcao	cabecalho	lista_parametros
+				lista_parametros_nao_vazia	parametro	comando	bloco_comando	seq_comando	atribuicao	entrada	saida	lista_expressoes_nao_vazia
+				retorna	controle_fluxo	expressao	lista_expressoes
+				
+%type <symbol> ';' ':' '(' ')' '{' '}' '=' '+' '-' '*' '/' '<' '>'
 
 %%
 /* Regras (e ações) da gramática da Linguagem K */
@@ -64,7 +74,7 @@ decl_global: decl_var ';'																										{ $$ = criarNodo(AST_DECL_GL,
   | decl_vetor ';'																													{ $$ = criarNodo(AST_DECL_GL, 0, $1,  0, 0, 0); }
   ;
 
-decl_local: decl_var ';' decl_local																					{ $$ = criarNodo(AST_DECL_LOC, 0, $1, $2, 0, 0); }
+decl_local: decl_var ';' decl_local																					{ $$ = criarNodo(AST_DECL_LOC, 0, $1, $3, 0, 0); }
 	|																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }
 	;
   
@@ -169,7 +179,7 @@ expressao: TK_IDENTIFICADOR																									{ $$ = criarNodo(AST_SYMBOL,
   | expressao TK_OC_NE expressao																						{ $$ = astCreate(AST_OP_NE, 0, $1, $3, 0, 0); }
   | expressao TK_OC_AND expressao																						{ $$ = astCreate(AST_OP_AND, 0, $1, $3, 0, 0); }
   | expressao TK_OC_OR expressao																						{ $$ = astCreate(AST_OP_OR, 0, $1, $3, 0, 0); }
-  | chamada_funcao																													{ $$ = astCreate(AST_CHAM_F, 0, $3, 0, 0, 0); }
+  | chamada_funcao																													{ $$ = astCreate(AST_CHAM_F, 0, $1, 0, 0, 0); }
   ;
 
 lista_expressoes: lista_expressoes_nao_vazia

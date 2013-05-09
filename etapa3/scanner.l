@@ -64,4 +64,3 @@ retorna { return TK_PR_RETORNA;	}
 . { return TOKEN_ERRO; }
 
 %%
-

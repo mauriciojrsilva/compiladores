@@ -59,7 +59,9 @@
 
 #define AST_BLO_COM             42
 
-#define AST_EMPTY               43
+#define AST_HEADER              43
+
+#define AST_EMPTY               44
 
 
 // estrutura de dados do nodo da árvore sintática abstrata
@@ -71,6 +73,5 @@ typedef struct ast_nodo {
 
 // protótipos das funções
 AST criarNodo(int tipo, HASH_ELEMENT *simbolo, AST *f0, AST *f1, AST *f2, AST *f3);
-
 void imprimeArvore(AST *raiz);
 

@@ -172,7 +172,7 @@ expressao: TK_IDENTIFICADOR																									{ $$ = criarNodo(AST_SYMBOL,
   | chamada_funcao																													{ $$ = astCreate(AST_CHAM_F, 0, $3, 0, 0, 0); }
   ;
 
-lista_expressoes: lista_expressoes_nao_vazia
+lista_expressoes: lista_expressoes_nao_vazia																{ $$ = $1; }
   |																																					{ $$ = criarNodo(AST_EMPTY,    0,  0,  0, 0, 0); }
   ;
 /* Function body - end */

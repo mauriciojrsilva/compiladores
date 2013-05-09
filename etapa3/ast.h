@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #define MAX_FILHOS 4
 
 #define AST_SYMBOL              1
@@ -63,15 +64,19 @@
 
 #define AST_EMPTY               44
 
+struct ListNode {
+  struct AST * child;
+  struct ListNode * next;
+};
 
-// estrutura de dados do nodo da árvore sintática abstrata
-typedef struct ast_nodo {
-	int tipo;
+typedef struct AST {
+  int tipo;
 	HASH_ELEMENT *simbolo;
-	struct ast_nodo *filhos[MAX_FILHOS];
+  struct ListNode childList;
 } AST;
 
 // protótipos das funções
-AST criarNodo(int tipo, HASH_ELEMENT *simbolo, AST *f0, AST *f1, AST *f2, AST *f3);
+AST criarNodo(int tipo, HASH_ELEMENT *simbolo, ListNode children);
 void imprimeArvore(AST *raiz);
+
 

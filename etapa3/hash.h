@@ -1,3 +1,6 @@
+#ifndef HASH_H
+#define HASH_H
+
 #include <stdio.h>
 
 typedef struct hash_t {
@@ -11,3 +14,7 @@ HASH_ELEMENT* hash_insert(int token, char *text);
 int hash_address(char *text);
 HASH_ELEMENT* hash_find(char *text);
 void hash_print();
+
+#endif
+
+

@@ -1,20 +1,22 @@
 /*
+
    main.c
 
-   Arquivo principal do analisador sintático.
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include "hash.c"
 
 extern FILE* yyin;
 extern FILE* yyout;
 extern char* yytext;
 extern int numeroLinha;
 
+/*
 void initMe(void) {
 	hash_init();
 }
-
+*/
 int yywrap(void){
 	return 1;
 }

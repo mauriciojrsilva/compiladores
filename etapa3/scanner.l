@@ -1,5 +1,6 @@
 %{
-#include "hash.c"
+#include "hash.h"
+#include "ast.h"
 #include "parser.h"
 
 int numeroLinha = 1;

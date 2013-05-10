@@ -155,7 +155,7 @@ controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando { $$ = criaAST(AS
   ;
 
 expressao: TK_IDENTIFICADOR { $$ = criaAST(AST_SYMBOL, $1, NULL, 0); }	
-  | TK_IDENTIFICADOR '[' expressao ']' { $$ = criaAST(AST_SYMBOL, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); }	
+  | TK_IDENTIFICADOR '[' expressao ']' { $$ = criaAST(AST_SYMBOL_VEC, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); }	
   | TK_LIT_INTEIRO { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
   | TK_LIT_FLUTUANTE { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
   | TK_LIT_FALSO { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
@@ -168,8 +168,8 @@ expressao: TK_IDENTIFICADOR { $$ = criaAST(AST_SYMBOL, $1, NULL, 0); }
   | expressao '/' expressao { $$ = criaAST(AST_OP_DIV, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao '<' expressao { $$ = criaAST(AST_OP_LES, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao '>' expressao { $$ = criaAST(AST_OP_GRE, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
-  | '+' expressao { $$ = $2; }
-  | '-' expressao { $$ = $2; }
+  | '+' expressao { $$ = criaAST(AST_OP_SUM, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }
+  | '-' expressao { $$ = criaAST(AST_OP_SUB, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }
   | '(' expressao ')' { $$ = $2; }
   | expressao TK_OC_LE expressao { $$ = criaAST(AST_OP_LE, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao TK_OC_GE expressao { $$ = criaAST(AST_OP_GE, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }

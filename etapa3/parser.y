@@ -127,7 +127,7 @@ comando: bloco_comando { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, N
 bloco_comando: '{' seq_comando '}' { $$ = criaAST(AST_BLO_COM, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }
   ;
   
-seq_comando: comando seq_comando { $$ = criaAST(AST_SEQ, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
+seq_comando: comando seq_comando { $$ = criaAST(AST_SEQ, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
 	| ';' { $$ = criaAST(AST_EMPTY, NULL, NULL, 0); }
   | { $$ = criaAST(AST_EMPTY, NULL, NULL, 0); }	
   ;
@@ -177,7 +177,7 @@ expressao: TK_IDENTIFICADOR { $$ = criaAST(AST_SYMBOL, $1, NULL, 0); }
   | expressao TK_OC_NE expressao { $$ = criaAST(AST_OP_NE, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao TK_OC_AND expressao { $$ = criaAST(AST_OP_AND, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao TK_OC_OR expressao { $$ = criaAST(AST_OP_OR, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
-  | chamada_funcao { $$ = criaAST(AST_CHAM_F, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
+  | chamada_funcao { $$ = $1; }
   ;
 
 lista_expressoes: lista_expressoes_nao_vazia { $$ = $1; }

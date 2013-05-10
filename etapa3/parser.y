@@ -6,8 +6,8 @@
 %}
 
 %union {
-  AST *astree;
-  HASH_ELEMENT *symbol;
+  AST* astree;
+  HASH_ELEMENT* symbol;
 }
 
 /* Declaração dos tokens da gramática da Linguagem K */
@@ -42,7 +42,7 @@
 %token<symbol> TK_LIT_CARACTERE
 %token<symbol> TK_LIT_CADEIA
 
-/* Indentificador */
+/* Identificador */
 %token<symbol> TK_IDENTIFICADOR
 
 /* Erro */
@@ -61,7 +61,7 @@
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); /*imprimir arvore aqui...*/ }
  
 programa: decl_global programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
   | def_funcao programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }

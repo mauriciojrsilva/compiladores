@@ -58,43 +58,43 @@
 ./build/main ex/certo20.txt ex/saida20.txt
 ./build/main ex/saida20.txt ex/final20.txt
 
-ECHO "1"
-diff ex/saida01.txt ex/final01.txt
-ECHO "2"
-diff ex/saida02.txt ex/final02.txt
-ECHO "3"
-diff ex/saida03.txt ex/final03.txt
-ECHO "4"
-diff ex/saida04.txt ex/final04.txt
-ECHO "5"
-diff ex/saida05.txt ex/final05.txt
-ECHO "6"
-diff ex/saida06.txt ex/final06.txt
-ECHO "7"
-diff ex/saida07.txt ex/final07.txt
-ECHO "8"
-diff ex/saida08.txt ex/final08.txt
-ECHO "9"
-diff ex/saida09.txt ex/final09.txt
-ECHO "10"
-diff ex/saida10.txt ex/final10.txt
-ECHO "11"
-diff ex/saida11.txt ex/final11.txt
-ECHO "12"
-diff ex/saida12.txt ex/final12.txt
-ECHO "13"
-diff ex/saida13.txt ex/final13.txt
-ECHO "14"
-diff ex/saida14.txt ex/final14.txt
-ECHO "15"
-diff ex/saida15.txt ex/final15.txt
-ECHO "16"
-diff ex/saida16.txt ex/final16.txt
-ECHO "17"
-diff ex/saida17.txt ex/final17.txt
-ECHO "18"
-diff ex/saida18.txt ex/final18.txt
-ECHO "19"
-diff ex/saida19.txt ex/final19.txt
-ECHO "20"
-diff ex/saida20.txt ex/final20.txt
+echo "\n1\n"
+sdiff ex/saida01.txt ex/final01.txt
+echo "\n2\n"
+sdiff ex/saida02.txt ex/final02.txt
+echo "\n3\n"
+sdiff ex/saida03.txt ex/final03.txt
+echo "\n4\n"
+sdiff ex/saida04.txt ex/final04.txt
+echo "\n5\n"
+sdiff ex/saida05.txt ex/final05.txt
+echo "\n6\n"
+sdiff ex/saida06.txt ex/final06.txt
+echo "\n7\n"
+sdiff ex/saida07.txt ex/final07.txt
+echo "\n8\n"
+sdiff ex/saida08.txt ex/final08.txt
+echo "\n9\n"
+sdiff ex/saida09.txt ex/final09.txt
+echo "\n10\n"
+sdiff ex/saida10.txt ex/final10.txt
+echo "\n11\n"
+sdiff ex/saida11.txt ex/final11.txt
+echo "\n12\n"
+sdiff ex/saida12.txt ex/final12.txt
+echo "\n13\n"
+sdiff ex/saida13.txt ex/final13.txt
+echo "\n14\n"
+sdiff ex/saida14.txt ex/final14.txt
+echo "\n15\n"
+sdiff ex/saida15.txt ex/final15.txt
+echo "\n16\n"
+sdiff ex/saida16.txt ex/final16.txt
+echo "\n17\n"
+sdiff ex/saida17.txt ex/final17.txt
+echo "\n18\n"
+sdiff ex/saida18.txt ex/final18.txt
+echo "\n19\n"
+sdiff ex/saida19.txt ex/final19.txt
+echo "\n20\n"
+sdiff ex/saida20.txt ex/final20.txt

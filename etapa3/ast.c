@@ -263,7 +263,7 @@ void astImprimeArvoreArquivo(AST* nodo) {
     	fprintf(yyout, "; ");
       break;
     case AST_OUT: 
-    	fprintf(yyout, "saida");
+    	fprintf(yyout, "saida ");
       astImprimeArvoreArquivo(nodo->filhos[0]);
       fprintf(yyout, "; ");
       break;

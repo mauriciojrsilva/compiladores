@@ -264,33 +264,38 @@ void astImprimeArvoreArquivo(AST* nodo) {
     case AST_RET: 
     	fprintf(yyout, "retorna ");
       astImprimeArvoreArquivo(nodo->filhos[0]);
+      fprintf(yyout, "; ");
       break;
     case AST_INP: 
     	fprintf(yyout, "entrada %s", nodo->simbolo->text);
+    	fprintf(yyout, "; ");
       break;
     case AST_OUT: 
     	fprintf(yyout, "saida");
       astImprimeArvoreArquivo(nodo->filhos[0]);
+      fprintf(yyout, "; ");
       break;
     case AST_ATR_VAR: 
     	fprintf(yyout, "%s = ", nodo->simbolo->text);
       astImprimeArvoreArquivo(nodo->filhos[0]);
+      fprintf(yyout, "; ");
       break;
     case AST_ATR_VEC: 
     	fprintf(yyout, "%s[", nodo->simbolo->text);
       astImprimeArvoreArquivo(nodo->filhos[0]);
       fprintf(yyout, "] = ");
       astImprimeArvoreArquivo(nodo->filhos[1]);
+      fprintf(yyout, "; ");
       break;
     case AST_CHAM_F: 
     	fprintf(yyout, "%s (", nodo->simbolo->text);
       astImprimeArvoreArquivo(nodo->filhos[0]);
       fprintf(yyout, ")");
+      fprintf(yyout, "; ");
       break;
     case AST_SEQ: fprintf(yyout, "\n");
       astImprimeArvoreArquivo(nodo->filhos[0]);
-      if(nodo->filhos[1] != 0) {
-        fprintf(yyout, ";");
+      if(nodo->filhos[1] != 0) {        
         astImprimeArvoreArquivo(nodo->filhos[1]);
       }
       break;
@@ -299,19 +304,19 @@ void astImprimeArvoreArquivo(AST* nodo) {
       astImprimeArvoreArquivo(nodo->filhos[0]);
       break;
     case AST_T_INT: 
-    	printf("decl inteiro\n");
     	fprintf(yyout, "inteiro");
       break;
     case AST_T_FLO: 
-    	printf("decl flutuante\n");
     	fprintf(yyout, "flutuante");
       break;
     case AST_T_BOO: 
     	fprintf(yyout, "booleano");
       break;
     case AST_T_CHA: 
-    	printf("decl char\n");
     	fprintf(yyout, "caractere");
+      break;
+    case AST_T_STR: 
+    	fprintf(yyout, "cadeia");
       break;
     case AST_LIST_P: 
     	astImprimeArvoreArquivo(nodo->filhos[0]);
@@ -329,13 +334,11 @@ void astImprimeArvoreArquivo(AST* nodo) {
       break;
     case AST_DECL_LOC:
     	astImprimeArvoreArquivo(nodo->filhos[0]);
-    	if(nodo->filhos[1] != 0) {
-    		fprintf(yyout, "; ");
+    	if(nodo->filhos[1] != 0) {    		
     		astImprimeArvoreArquivo(nodo->filhos[1]);
     	}
       break;
     case AST_DEF_F: 
-    	//fprintf(yyout, "\n%s: ", nodo->simbolo->text);
       astImprimeArvoreArquivo(nodo->filhos[0]);
       astImprimeArvoreArquivo(nodo->filhos[1]);
       astImprimeArvoreArquivo(nodo->filhos[2]);
@@ -344,24 +347,20 @@ void astImprimeArvoreArquivo(AST* nodo) {
     	fprintf(yyout, "%s: ", nodo->simbolo->text);
       astImprimeArvoreArquivo(nodo->filhos[0]);
       astImprimeArvoreArquivo(nodo->filhos[1]);
+      fprintf(yyout, "; ");
       break;
     case AST_VEC_SIZE: 
     	fprintf(yyout, " [%s]", nodo->simbolo->text);
       break;
     case AST_DECL_VAR: 
-    	printf("decl var\n");
     	fprintf(yyout, "%s: ", nodo->simbolo->text);
-    	printf("decl after var\n");
       astImprimeArvoreArquivo(nodo->filhos[0]);
+      fprintf(yyout, "; ");
       break;
-    case AST_DECL_GL:
-    	printf("decl global\n"); 
+    case AST_DECL_GL: 
     	astImprimeArvoreArquivo(nodo->filhos[0]);
-      fprintf(yyout, ";");
       break;
     case AST_PROG: 
-    	printf("\n");
-    	printf("programaaa\n");
     	fprintf(yyout, "\n");
       for(i = 0; i < nodo->numFilhos; i++)
       	astImprimeArvoreArquivo(nodo->filhos[i]);

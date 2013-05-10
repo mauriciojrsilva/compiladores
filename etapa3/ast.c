@@ -24,225 +24,18 @@ AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos) {
 
 void criaNodo(AST** filhos, AST* filho, int* index) {
 	if (filho != NULL) {
-		filhos[index] = f1;
+		filhos[(*index)] = filho;
 		(*index)++;
 	}
 }
 
-void imprimeArvore(AST *raiz) { 
-	// TODO: fazer a função de impressão da árvore
-}
-
-void imprimeArvore(AST *raiz) {
-        imprimeArvore_aux(root, 1);
-}
-
-void imprimeArvore_aux(AST *raiz, int level) {
-        if (root == 0)
+void astPrintNodo(AST *nodo) {
+        if (nodo == 0)
                 return;
        
-        int i;
-        for (i = 0; i < level; ++i)     {
-                printf("  ");
-        }
-
-        astPrintNode(root);
+        printf("AST(");
        
-        for(i = 0; i < MAX_CHILDREN; i++){
-                astPrintTree_aux(root->children[i], level+1);
-        }
-}
-
-void astPrintTreeSrc (AST *nodo) {
-        if (node == 0)
-                return;
-
-        int i;
-
-        switch(node->type) {
-                case AST_SYMBOL: fprintf(yyout, "%s", node->symbol->text);
-                        break;
-                case AST_OP_SUM: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " + ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_SUB: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " - ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_MUL: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " * ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_DIV: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " / ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_LES: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " < ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_GRE: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " > ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_LE: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " <= ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_GE: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " >= ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_EQ: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " == ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_NE: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " != ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_AND: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " && ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_OP_OR: fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, " || ");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_LIST_E: fprintf(yyout, " ");
-                        astPrintTreeSrc(node->children[0]);
-                        if(node->children[1] != 0) {
-                                fprintf(yyout, ",");
-                                astPrintTreeSrc(node->children[1]);
-                        }
-                        break;
-                case AST_IF: fprintf(yyout, "if (");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, ")\nthen ");
-                        astPrintTreeSrc(node->children[1]);
-                        if(node->children[2] != 0) {
-                                fprintf(yyout, "\nelse ");
-                                astPrintTreeSrc(node->children[2]);
-                        }
-                        break;
-                case AST_WHILE:fprintf(yyout, "while (");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, ")\n");
-                        astPrintTreeSrc(node->children[1]);
-                        break;
-                case AST_RET: fprintf(yyout, "return ");
-                        astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_INP: fprintf(yyout, "input %s", node->symbol->text);
-                        break;
-                case AST_OUT: fprintf(yyout, "output");
-                        astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_ATR_VAR: fprintf(yyout, "%s = ", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_ATR_VEC: fprintf(yyout, "%s[", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, "] = ");
-                        astPrintTreeSrc(node->children[1]);
-                        break;
-                case AST_CHAM_F: fprintf(yyout, "%s (", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, ")");
-                        break;
-                case AST_SEQ: fprintf(yyout, "\n");
-                        astPrintTreeSrc(node->children[0]);
-                        if(node->children[1] != 0) {
-                                fprintf(yyout, ";");
-                                astPrintTreeSrc(node->children[1]);
-                        }
-                        break;
-                case AST_PARAM: fprintf(yyout, "%s: ", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_T_INT: fprintf(yyout, "integer");
-                        break;
-                case AST_T_FLO: fprintf(yyout, "floating");
-                        break;
-                case AST_T_BOO: fprintf(yyout, "boolean");
-                        break;
-                case AST_T_CHA: fprintf(yyout, "character");
-                        break;
-                case AST_LIST_P: astPrintTreeSrc(node->children[0]);
-                        if(node->children[1] != 0) {
-                                fprintf(yyout, ", ");
-                                astPrintTreeSrc(node->children[1]);
-                        }
-                        break;
-                case AST_DEF_F: fprintf(yyout, "\n%s: ", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, "(");
-                        astPrintTreeSrc(node->children[1]);
-                        fprintf(yyout, ")\n");
-                        astPrintTreeSrc(node->children[2]);
-                        fprintf(yyout, ";");
-                        break;
-                case AST_DECL_VEC: fprintf(yyout, "declare %s: ", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        astPrintTreeSrc(node->children[1]);
-                        break;
-                case AST_VEC_SIZE: fprintf(yyout, " [%s]", node->symbol->text);
-                        break;
-                case AST_DECL_VAR: fprintf(yyout, "declare %s: ", node->symbol->text);
-                        astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_DECL_GL: astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, ";");
-                        break;
-                case AST_PROG: fprintf(yyout, "\n");
-                        for(i = 0; i < MAX_CHILDREN; i++)
-                                astPrintTreeSrc(node->children[i]);
-                        break;
-                case AST_BLO_COM: fprintf(yyout, "{");
-                        astPrintTreeSrc(node->children[0]);
-                        fprintf(yyout, "\n}");
-                        break;
-                case AST_COM: astPrintTreeSrc(node->children[0]);
-                        break;
-                case AST_EMPTY: fprintf(yyout, "");
-                        break;
-                default: break;
-        }
-}
-
-
-void astPrintNode(ASTREE *node) {
-        if (node == 0)
-                return;
-       
-        printf("ASTREE(");
-       
-        switch(node->type) {
+        switch(nodo->tipo) {
                 case AST_SYMBOL: printf("Simbolo na hash");
                         break;
                 case AST_OP_SUM: printf("Operacao +");
@@ -271,15 +64,15 @@ void astPrintNode(ASTREE *node) {
                         break;
                 case AST_LIST_E: printf("Lista de expressoes");
                         break;
-                case AST_IF: printf("If");
+                case AST_IF: printf("Se");
                         break;
-                case AST_WHILE: printf("While");
+                case AST_WHILE: printf("Enquanto");
                         break;
-                case AST_RET: printf("Return");
+                case AST_RET: printf("Retorna");
                         break;
-                case AST_INP: printf("Input");
+                case AST_INP: printf("Entrada");
                         break;
-                case AST_OUT: printf("Output");
+                case AST_OUT: printf("Saida");
                         break;
                 case AST_ATR_VAR: printf("Atribuicao variavel");
                         break;
@@ -291,13 +84,13 @@ void astPrintNode(ASTREE *node) {
                         break;
                 case AST_PARAM: printf("Parametro");
                         break;
-                case AST_T_INT: printf("Tipo integer");
+                case AST_T_INT: printf("Tipo inteiro");
                         break;
-                case AST_T_FLO: printf("Tipo float");
+                case AST_T_FLO: printf("Tipo flutuante");
                         break;
-                case AST_T_BOO: printf("Tipo boolean");
+                case AST_T_BOO: printf("Tipo booleano");
                         break;
-                case AST_T_CHA: printf("Tipo character");
+                case AST_T_CHA: printf("Tipo caracter");
                         break;
                 case AST_LIST_P: printf("Lista de parametros");
                         break;  
@@ -323,8 +116,211 @@ void astPrintNode(ASTREE *node) {
                         break;
         }
        
-        if (node->symbol != 0)
-                printf(", %s", node->symbol->text);
+        if (nodo->simbolo != 0)
+                printf(", %s", nodo->simbolo->text);
                
         printf(");\n");
+}
+
+
+void imprimeArvore_aux(AST *raiz, int nivel) {
+        if (raiz == 0)
+                return;
+       
+        int i;
+        for (i = 0; i < nivel; ++i)     {
+                printf("  ");
+        }
+
+        astPrintNodo(raiz);
+       
+        for(i = 0; i < raiz->numFilhos; i++){
+                imprimeArvore_aux(raiz->filhos[i], nivel+1);
+        }
+}
+
+void imprimeArvore(AST *raiz) {
+        imprimeArvore_aux(raiz, 1);
+}
+
+void astImprimeArvoreArquivo (AST *nodo) {
+        if (nodo == 0)
+                return;
+
+        int i;
+
+        switch(nodo->tipo) {
+                case AST_SYMBOL: fprintf(yyout, "%s", nodo->simbolo->text);
+                        break;
+                case AST_OP_SUM: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " + ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_SUB: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " - ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_MUL: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " * ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_DIV: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " / ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_LES: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " < ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_GRE: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " > ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_LE: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " <= ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_GE: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " >= ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_EQ: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " == ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_NE: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " != ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_AND: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " && ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_OP_OR: fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, " || ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_LIST_E: fprintf(yyout, " ");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        if(nodo->filhos[1] != 0) {
+                                fprintf(yyout, ",");
+                                astImprimeArvoreArquivo(nodo->filhos[1]);
+                        }
+                        break;
+                case AST_IF: fprintf(yyout, "se (");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, ")\nentao ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        if(nodo->filhos[2] != 0) {
+                                fprintf(yyout, "\nsenao ");
+                                astImprimeArvoreArquivo(nodo->filhos[2]);
+                        }
+                        break;
+                case AST_WHILE:fprintf(yyout, "enquanto (");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, ")\n");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        break;
+                case AST_RET: fprintf(yyout, "retorna ");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_INP: fprintf(yyout, "entrada %s", nodo->simbolo->text);
+                        break;
+                case AST_OUT: fprintf(yyout, "saida");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_ATR_VAR: fprintf(yyout, "%s = ", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_ATR_VEC: fprintf(yyout, "%s[", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, "] = ");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        break;
+                case AST_CHAM_F: fprintf(yyout, "%s (", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, ")");
+                        break;
+                case AST_SEQ: fprintf(yyout, "\n");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        if(nodo->filhos[1] != 0) {
+                                fprintf(yyout, ";");
+                                astImprimeArvoreArquivo(nodo->filhos[1]);
+                        }
+                        break;
+                case AST_PARAM: fprintf(yyout, "%s: ", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_T_INT: fprintf(yyout, "inteiro");
+                        break;
+                case AST_T_FLO: fprintf(yyout, "flutuante");
+                        break;
+                case AST_T_BOO: fprintf(yyout, "booleano");
+                        break;
+                case AST_T_CHA: fprintf(yyout, "caractere");
+                        break;
+                case AST_LIST_P: astImprimeArvoreArquivo(nodo->filhos[0]);
+                        if(nodo->filhos[1] != 0) {
+                                fprintf(yyout, ", ");
+                                astImprimeArvoreArquivo(nodo->filhos[1]);
+                        }
+                        break;
+                case AST_DEF_F: fprintf(yyout, "\n%s: ", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, "(");
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        fprintf(yyout, ")\n");
+                        astImprimeArvoreArquivo(nodo->filhos[2]);
+                        fprintf(yyout, ";");
+                        break;
+                case AST_DECL_VEC: fprintf(yyout, "%s: ", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        astImprimeArvoreArquivo(nodo->filhos[1]);
+                        break;
+                case AST_VEC_SIZE: fprintf(yyout, " [%s]", nodo->simbolo->text);
+                        break;
+                case AST_DECL_VAR: fprintf(yyout, "%s: ", nodo->simbolo->text);
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_DECL_GL: astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, ";");
+                        break;
+                case AST_PROG: fprintf(yyout, "\n");
+                        for(i = 0; i < nodo->numFilhos; i++)
+                                astImprimeArvoreArquivo(nodo->filhos[i]);
+                        break;
+                case AST_BLO_COM: fprintf(yyout, "{");
+                        astImprimeArvoreArquivo(nodo->filhos[0]);
+                        fprintf(yyout, "\n}");
+                        break;
+                case AST_COM: astImprimeArvoreArquivo(nodo->filhos[0]);
+                        break;
+                case AST_EMPTY: fprintf(yyout, "");
+                        break;
+                default: break;
+        }
 }

@@ -104,7 +104,7 @@ lista_parametros: lista_parametros_nao_vazia { $$ = $1; }
   ;
 
 lista_parametros_nao_vazia: parametro ',' lista_parametros_nao_vazia { $$ = criaAST(AST_LIST_P, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
-  | parametro { $$ = criaAST(AST_LIST_P, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
+  | parametro { $$ = $1; }
   ;
 
 parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = criaAST(AST_PARAM, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); }
@@ -114,12 +114,12 @@ parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = criaAST(AST_PARAM, $1, criaNodos
 
 /* Function body - begin */
 
-comando: bloco_comando { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
-  | controle_fluxo { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
-  | atribuicao { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
-  | entrada { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
-  | saida { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
-  | retorna { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
+comando: bloco_comando { $$ = $1; }
+  | controle_fluxo { $$ = $1; }
+  | atribuicao { $$ = $1; }
+  | entrada { $$ = $1; }
+  | saida { $$ = $1; }
+  | retorna { $$ = $1; }
   | decl_var ';' { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
   | chamada_funcao ';' { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
   ;
@@ -143,7 +143,7 @@ saida: TK_PR_SAIDA lista_expressoes_nao_vazia ';' { $$ = criaAST(AST_OUT, NULL, 
   ;
 
 lista_expressoes_nao_vazia: expressao ',' lista_expressoes_nao_vazia { $$ = criaAST(AST_LIST_E, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
-  | expressao { $$ = criaAST(AST_LIST_E, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
+  | expressao { $$ = $1; }
   ;
 
 retorna: TK_PR_RETORNA expressao ';' { $$ = criaAST(AST_RET, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }

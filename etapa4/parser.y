@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "ast.h"
 #include "hash.h"
+#include "semantica.h"
 
 %}
 

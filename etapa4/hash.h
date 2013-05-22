@@ -3,11 +3,6 @@
 
 #include <stdio.h>
 
-<<<<<<< HEAD
-typedef struct hash_t {
-        int token;
-=======
-
 #define SIMBOLO_LIT_INTEIRO              1
 #define SIMBOLO_LIT_FLUTUANTE            2
 #define SIMBOLO_LIT_VERDADEIRO           3
@@ -31,7 +26,6 @@ typedef struct hash_t {
         int token;
         int tipoDado;
         struct AST *ast;
->>>>>>> lucaslazari/master
         char *text;
         struct hash_t *next;
 } HASH_ELEMENT;

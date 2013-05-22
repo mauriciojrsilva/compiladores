@@ -1,11 +1,9 @@
 #ifndef AST_H
 #define AST_H
 
-
 #include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #define MAX_FILHOS 4
 
@@ -67,11 +65,7 @@
 #define AST_EMPTY               42
 
 typedef struct AST {
-<<<<<<< HEAD
-  int tipo, numFilhos;
-=======
   int tipo, numFilhos, linha;
->>>>>>> lucaslazari/master
 	HASH_ELEMENT* simbolo;
   struct AST** filhos;
 } AST;

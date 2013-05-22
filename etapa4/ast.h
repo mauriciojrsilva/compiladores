@@ -1,11 +1,9 @@
 #ifndef AST_H
 #define AST_H
 
-
 #include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #define MAX_FILHOS 4
 

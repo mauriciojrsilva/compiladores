@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 
-
 #define SIMBOLO_LIT_INTEIRO              1
 #define SIMBOLO_LIT_FLUTUANTE            2
 #define SIMBOLO_LIT_VERDADEIRO           3

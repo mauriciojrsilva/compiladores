@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include "ast.h"
 #include "hash.h"
+<<<<<<< HEAD
+=======
+#include "semantica.h"
+>>>>>>> lucaslazari/master
 
 %}
 

@@ -8,7 +8,12 @@ AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos) {
 	nodo->tipo = tipo;
 	nodo->numFilhos = numFilhos;
 	nodo->simbolo = simbolo;
+<<<<<<< HEAD
 	nodo->filhos	= filhos;	
+=======
+	nodo->filhos	= filhos;
+	nodo->linha = getLineNumber();
+>>>>>>> lucaslazari/master
 	return nodo;
 }
 

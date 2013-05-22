@@ -6,7 +6,8 @@ void verificaDeclaracoes(AST* raiz) {
 		
 	// deve-se verificar as declarações somente se o nodo da AST for uma declaração (de variável, vetor, função ou parâmetro de função)
 	if (raiz->tipo == AST_DECL_VAR || raiz->tipo == AST_DECL_VEC || raiz->tipo == AST_DEF_F || raiz->tipo == AST_PARAM) {
-	
+
+		printf("raiz tipo: %d\n", raiz->tipo);
 		// verifica se foi colocado o nome do identificador
 		if (raiz->simbolo == 0) {
     	printf("Linha %d: Declaração de identificador: faltando o nome do identificador.\n", raiz->linha);
@@ -15,7 +16,7 @@ void verificaDeclaracoes(AST* raiz) {
 			// inicialmente o elemento da hashtable retorna um token de identificador. se ele retornar um token diferente, é porque o símbolo já foi definido
 			if (raiz->simbolo->token != SIMBOLO_IDENTIFICADOR) {				
 				printf("Linha %d: Identificador %s já definido.\n", raiz->linha, raiz->simbolo->text);
-			}
+			}			
 			
 			// define o tipo (token) do símbolo
 			switch(raiz->tipo) { 
@@ -43,7 +44,7 @@ void verificaDeclaracoes(AST* raiz) {
 }
 
 // função semântica que verifica a utilização dos identificadores
-void verificaUtilizacao(AST *raiz) {
+void verificaUtilizacao(AST* raiz) {
 	if (raiz == 0) return;
 	
 	// verifica a utilização das variáveis (escalares)
@@ -90,7 +91,7 @@ void verificaUtilizacao(AST *raiz) {
 	}
 }
 
-void verificaTipoDados(AST *raiz) {
+void verificaTipoDados(AST* raiz) {
   if(raiz == 0) return;
  
   // Verifica tipos dos operandos de expressões aritmeticas
@@ -238,7 +239,7 @@ void verificaChamadaFuncao(AST* raiz) {
 }
 
 // função auxiliar que verifica se os tipos dos parâmetros declarados e utilizados nas chamadas de funções batem
-void verificaListaParametros(AST *paramDeclaracao, AST *paramChamada, AST *raiz) { 
+void verificaListaParametros(AST* paramDeclaracao, AST* paramChamada, AST* raiz) { 
 	// se não há mais parâmetros, interrompe a recursão
 	if(paramDeclaracao == 0 && paramChamada == 0) return;
 	
@@ -270,7 +271,7 @@ void verificaListaParametros(AST *paramDeclaracao, AST *paramChamada, AST *raiz)
 
 
 
-int verificaTipoExpressao(AST *expressao) {
+int verificaTipoExpressao(AST* expressao) {
 	int tipoDado1, tipoDado2;
   if (expressao == 0) {
 		return -1;

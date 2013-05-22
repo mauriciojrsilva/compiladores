@@ -21,7 +21,6 @@
 #define TIPODADO_BOOLEANO               4
 #define TIPODADO_CADEIA                 5
 
-
 typedef struct hash_t {
         int token;
         int tipoDado;
@@ -37,5 +36,3 @@ HASH_ELEMENT* hash_find(char *text);
 void hash_print();
 
 #endif
-
-

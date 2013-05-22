@@ -62,7 +62,7 @@
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); verificaDeclaracoes($$); verificaUtilizacao($$); verificaDados($$); /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); verificaDeclaracoes($$); verificaUtilizacao($$); verificaTipoDados($$); /*imprimir arvore aqui...*/ }
  
 programa: decl_global programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
   | def_funcao programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
@@ -90,10 +90,10 @@ tipo_var: TK_PR_INTEIRO { $$ = criaAST(AST_T_INT, NULL, NULL, 0); }
         | TK_PR_CADEIA { $$ = criaAST(AST_T_STR, NULL, NULL, 0); }
         ;
 
-def_funcao: cabecalho decl_local bloco_comando { $$ = criaAST(AST_DEF_F, NULL, criaNodos($1, $2, $3, NULL, 3), 3); }
+def_funcao: cabecalho decl_local bloco_comando { $$ = criaAST(AST_DEF_F, $1->simbolo, criaNodos($1, $2, $3, NULL, 3), 3); }
   ;
   
-chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = criaAST(AST_CHAM_F, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); }
+chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = criaAST(AST_CHAM_F, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); $$->simbolo = $1; }
 
 
 /* Function header - begin */
@@ -157,12 +157,12 @@ controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando { $$ = criaAST(AS
 
 expressao: TK_IDENTIFICADOR { $$ = criaAST(AST_SYMBOL, $1, NULL, 0); }	
   | TK_IDENTIFICADOR '[' expressao ']' { $$ = criaAST(AST_SYMBOL_VEC, $1, criaNodos($3, NULL, NULL, NULL, 1), 1); }	
-  | TK_LIT_INTEIRO { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
-  | TK_LIT_FLUTUANTE { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
-  | TK_LIT_FALSO { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
-  | TK_LIT_VERDADEIRO { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
-  | TK_LIT_CARACTERE { $$ = criaAST(AST_SYMBOL, $1,  NULL, 0); }
-  | TK_LIT_CADEIA { $$ = criaAST(AST_SYMBOL, $1, NULL, 0); }
+  | TK_LIT_INTEIRO { $$ = criaAST(AST_SYMBOL_LIT, $1,  NULL, 0); }
+  | TK_LIT_FLUTUANTE { $$ = criaAST(AST_SYMBOL_LIT, $1,  NULL, 0); }
+  | TK_LIT_FALSO { $$ = criaAST(AST_SYMBOL_LIT, $1,  NULL, 0); }
+  | TK_LIT_VERDADEIRO { $$ = criaAST(AST_SYMBOL_LIT, $1,  NULL, 0); }
+  | TK_LIT_CARACTERE { $$ = criaAST(AST_SYMBOL_LIT, $1,  NULL, 0); }
+  | TK_LIT_CADEIA { $$ = criaAST(AST_SYMBOL_LIT, $1, NULL, 0); }
   | expressao '+' expressao { $$ = criaAST(AST_OP_SUM, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao '-' expressao { $$ = criaAST(AST_OP_SUB, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }
   | expressao '*' expressao { $$ = criaAST(AST_OP_MUL, NULL, criaNodos($1, $3, NULL, NULL, 2), 2); }

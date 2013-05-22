@@ -63,7 +63,7 @@
 #define AST_EMPTY               42
 
 typedef struct AST {
-  int tipo, numFilhos;
+  int tipo, numFilhos, linha;
 	HASH_ELEMENT* simbolo;
   struct AST** filhos;
 } AST;

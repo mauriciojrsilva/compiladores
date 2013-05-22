@@ -5,13 +5,6 @@
 
 int numeroLinha = 1;
 
-#define K_SIMBOLO_INDEFINIDO 0
-#define K_SIMBOLO_LITERAL_INTEIRO 1
-#define K_SIMBOLO_LITERAL_FLUTUANTE 2
-#define K_SIMBOLO_LITERAL_CARACTERE 3
-#define K_SIMBOLO_LITERAL_CADEIA 4
-#define K_SIMBOLO_LITERAL_IDENTIFICADOR 5
-
 %}
 
 %x COMM
@@ -46,11 +39,11 @@ retorna { return TK_PR_RETORNA;	}
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$" { return yytext[0];	}
 
-{letra}({letra}|{digito})* { yylval.symbol = hash_insert(K_SIMBOLO_LITERAL_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
-{digito}+ { yylval.symbol = hash_insert(K_SIMBOLO_LITERAL_INTEIRO, yytext); return TK_LIT_INTEIRO; }
-{digito}+"."{digito}+ { yylval.symbol = hash_insert(K_SIMBOLO_LITERAL_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
-\'.\' { yylval.symbol = hash_insert(K_SIMBOLO_LITERAL_CARACTERE, yytext); return TK_LIT_CARACTERE; }
-\"[^"]*\" { yylval.symbol = hash_insert(K_SIMBOLO_LITERAL_CADEIA, yytext); return TK_LIT_CADEIA; }
+{letra}({letra}|{digito})* { yylval.symbol = hash_insert(SIMBOLO_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
+{digito}+ { yylval.symbol = hash_insert(SIMBOLO_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO; }
+{digito}+"."{digito}+ { yylval.symbol = hash_insert(SIMBOLO_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
+\'.\' { yylval.symbol = hash_insert(SIMBOLO_LIT_CHAR, yytext); return TK_LIT_CARACTERE; }
+\"[^"]*\" { yylval.symbol = hash_insert(SIMBOLO_LIT_CADEIA, yytext); return TK_LIT_CADEIA; }
 
 "//".* {}
 

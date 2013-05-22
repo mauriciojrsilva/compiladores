@@ -6,8 +6,7 @@ void verificaDeclaracoes(AST* raiz) {
 		
 	// deve-se verificar as declarações somente se o nodo da AST for uma declaração (de variável, vetor, função ou parâmetro de função)
 	if (raiz->tipo == AST_DECL_VAR || raiz->tipo == AST_DECL_VEC || raiz->tipo == AST_DEF_F || raiz->tipo == AST_PARAM) {
-
-		printf("raiz tipo: %d\n", raiz->tipo);
+	
 		// verifica se foi colocado o nome do identificador
 		if (raiz->simbolo == 0) {
     	printf("Linha %d: Declaração de identificador: faltando o nome do identificador.\n", raiz->linha);

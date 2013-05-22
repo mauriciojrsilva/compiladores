@@ -62,7 +62,7 @@
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); verificaDeclaracoes($$); verificaUtilizacao($$); verificaDados($$); /*imprimir arvore aqui...*/ }
  
 programa: decl_global programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
   | def_funcao programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }

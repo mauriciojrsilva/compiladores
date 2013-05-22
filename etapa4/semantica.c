@@ -1,4 +1,5 @@
-#include "astree.h"
+#include "semantica.h"
+#include "hash.h"
 
 void verificaDeclaracoes(AST *raiz) {
 	if (raiz == 0) return;
@@ -30,12 +31,14 @@ void verificaDeclaracoes(AST *raiz) {
 				case AST_PARAM: 
 					raiz->simbolo->token = SIMBOLO_PARAM;
 					break;
-			}	
+			}
+		}	
 	}
 	
 	// chama recursivamente os filhos para continuar a verificação de declarações de identificadores...
-	for (int i = 0; i < MAX_FILHOS; i++) {
-		verificaDeclaracoes(raiz->filhos[i]):	
+	int i;
+	for (i = 0; i < MAX_FILHOS; i++) {
+		verificaDeclaracoes(raiz->filhos[i]);
 	}	
 }
 
@@ -82,8 +85,9 @@ void verificaUtilizacao(AST *raiz) {
 	}
 	
 	// chama recursivamente os filhos para continuar a verificação de utilização de identificadores...
-	for (int i = 0; i < MAX_FILHOS; i++) {
-		verificaUtilizacao(raiz->filhos[i]):	
+	int i;
+	for (i = 0; i < MAX_FILHOS; i++) {
+		verificaUtilizacao(raiz->filhos[i]);
 	}
 }
 
@@ -95,7 +99,7 @@ void verificaDados(AST *raiz) {
 
 
 // função auxiliar para verificar a consistência dos parâmetros de chamadas de funções
-void verificaChamadaFuncao(AST *raiz) { 
+void verificaChamadaFuncao(AST* raiz) { 
 	//if (raiz == 0) return;
       
   if (raiz->tipo == AST_CHAM_F) {
@@ -126,7 +130,7 @@ void verificaListaParametros(AST *paramDeclaracao, AST *paramChamada, AST *raiz)
 	int tipoParametro = verificaTipoExpressao(paramChamada->filhos[0]);
 	
 	// verifica se os tipos do par chamada <-> declaração batem (verificar se todos os tipos estão sendo tratados!)
-	if (paramDeclaracao->filhos[0]->symbol->dataType == TIPODADO_BOOLEANO && tipoParametro != TIPODADO_BOOLEANO) {
+	if (paramDeclaracao->filhos[0]->simbolo->tipoDado == TIPODADO_BOOLEANO && tipoParametro != TIPODADO_BOOLEANO) {
 		printf("Linha %d: Chamada da função %s tipo de parâmetro inválido.\n", raiz->linha, raiz->simbolo->text);
 		return;
 	} else if (paramDeclaracao->filhos[0]->simbolo->tipoDado == TIPODADO_CHAR && tipoParametro != TIPODADO_CHAR	&& tipoParametro != TIPODADO_BOOLEANO) {
@@ -138,7 +142,7 @@ void verificaListaParametros(AST *paramDeclaracao, AST *paramChamada, AST *raiz)
 	}
   
   // chamada recursiva para comparar o próximo "par" de parâmetros
-	verificaListaParametros(paramDeclaracao->filhos[1], paramChamada->filhos[1], root);
+	verificaListaParametros(paramDeclaracao->filhos[1], paramChamada->filhos[1], raiz);
 }
 
 
@@ -152,15 +156,15 @@ int verificaTipoExpressao(AST *expressao) {
 			return expressao->simbolo->tipoDado;
   	} else {
 			// operadores relacionais/lógicos sempre retornam um valor booleano!
-    	if (expressao->type == AST_OP_LES || 
-    	    expressao->type == AST_OP_GRE || 
-    	    expressao->type == AST_OP_LE  ||
-          expressao->type == AST_OP_GE  || 
-          expressao->type == AST_OP_EQ  || 
-          expressao->type == AST_OP_NE  ||
-          expressao->type == AST_OP_AND || 
-          expressao->type == AST_OP_OR) {
-				return DATATYPE_BOOLEAN;
+    	if (expressao->tipo == AST_OP_LES || 
+    	    expressao->tipo == AST_OP_GRE || 
+    	    expressao->tipo == AST_OP_LE  ||
+          expressao->tipo == AST_OP_GE  || 
+          expressao->tipo == AST_OP_EQ  || 
+          expressao->tipo == AST_OP_NE  ||
+          expressao->tipo == AST_OP_AND || 
+          expressao->tipo == AST_OP_OR) {
+				return TIPODADO_BOOLEANO;
 			}
       
       // verifica os tipos das sub-expressões

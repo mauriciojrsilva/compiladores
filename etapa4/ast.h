@@ -76,5 +76,6 @@ AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
 AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos);
 void criaNodo(AST** filhos, AST* filho, int* index);
 void imprimeArvore(AST *raiz);
+int mapTipoDado(int type);
 
 #endif

@@ -38,9 +38,6 @@ int main (int argc, char **argv) {
 		exit(1);
 	}
 	
-	// inicia a tabela hash
-	hash_init();
-	
 	// inicializa arquivos para leitura/escrita
 	yyin  = fopen(argv[1], "r");
 	yyout = fopen(argv[2], "w");

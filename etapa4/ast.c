@@ -1,4 +1,7 @@
 #include "ast.h"
+#define MAX_ESCOPOS_INICIO 10
+#define TAXA_CRESCIMENTO_ESCOPOS 2
+
 
 FILE *yyout;
 
@@ -10,7 +13,21 @@ AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos) {
 	nodo->simbolo = simbolo;
 	nodo->filhos = filhos;
 	nodo->linha = getLineNumber();
+  nodo->hashTable = NULL;
+  nodo->hashTablesPai = (HASH_ELEMENT***)calloc(MAX_ESCOPOS_INICIO, sizeof(HASH_ELEMENT**));
+  nodo->numHashTablesPai = MAX_ESCOPOS_INICIO;
+  nodo->inicioEscopo = 0;
 	return nodo;
+}
+
+AST* criaASTNovoEscopo(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos) {
+  AST *nodo = criaAST(tipo, simbolo, filhos, numFilhos);
+  nodo->inicioEscopo = 1;
+  nodo->hashTable = hash_init();
+  if (simbolo != NULL)
+    hashElement_insert(nodo->hashTable, simbolo);  
+  passaHashTableParaFilhos(nodo->hashTable, filhos, numFilhos);
+  return nodo;
 }
 
 AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos) {
@@ -30,9 +47,59 @@ void criaNodo(AST** filhos, AST* filho, int* index) {
 	}
 }
 
+void passaHashTableParaFilhos(HASH_ELEMENT** hashTable, AST** filhos, int numFilhos) {
+  int i;
+  AST* filhoAtual;
+  for (i = 0; i < numFilhos; i++) {
+    filhoAtual = filhos[i];
+
+    if (!filhoAtual->inicioEscopo) {
+      if (filhoAtual->simbolo != NULL) {
+        filhoAtual->hashTable = hashTable;
+        hashElement_insert(filhoAtual->hashTable, filhoAtual->simbolo);
+      }
+    } else
+      insereHashTableEmListaDePaisNoNodo(filhoAtual, hashTable);
+    
+    if (filhos[i]->filhos != NULL)
+      passaHashTableParaFilhos(hashTable, filhoAtual->filhos, filhoAtual->numFilhos);
+  }
+}
+
+void insereHashTableEmListaDePaisNoNodo(AST* nodo, HASH_ELEMENT** hashTable) {
+  if (nodo != NULL) {
+    int i, temPai = 0, preenchidos = 0, primeiroIndiceLivre = -1;
+    for (i = 0; i < nodo->numHashTablesPai; i++) {
+      primeiroIndiceLivre = preenchidos;
+      if (nodo->hashTablesPai[i] != NULL) {
+        preenchidos++;
+        if (nodo->hashTablesPai[i] == hashTable) {
+          temPai = 1;
+          break;
+        }
+      }
+    }
+
+    if (!temPai) {
+      if (preenchidos < nodo->numHashTablesPai) {
+        nodo->hashTablesPai[primeiroIndiceLivre] = hashTable;
+      } else {
+        int novoTamanho = nodo->numHashTablesPai * TAXA_CRESCIMENTO_ESCOPOS;
+        HASH_ELEMENT*** novaListaPais = (HASH_ELEMENT***)calloc(novoTamanho, sizeof(HASH_ELEMENT**));
+        for (i = 0; i < nodo->numHashTablesPai; i++) {
+          novaListaPais[i] = nodo->hashTablesPai[i];
+        }
+        free(nodo->hashTablesPai);
+        nodo->hashTablesPai = novaListaPais;
+        nodo->numHashTablesPai = novoTamanho;
+      }
+    }
+  }
+}
+
 void astPrintNodo(AST *nodo) {
   if (nodo == 0)
-          return;
+    return;
  
   printf("AST(");
  

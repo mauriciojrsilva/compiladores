@@ -29,10 +29,12 @@ typedef struct hash_t {
         struct hash_t *next;
 } HASH_ELEMENT;
 
-void hash_init();
-HASH_ELEMENT* hash_insert(int token, char *text);
+HASH_ELEMENT** hash_init();
+HASH_ELEMENT* hashElement_create(int token, char *text);
+HASH_ELEMENT* hashElement_insert(HASH_ELEMENT** hashTable, HASH_ELEMENT* hashElement);
+HASH_ELEMENT* hash_insert(HASH_ELEMENT** hashTable, int token, char *text);
 int hash_address(char *text);
-HASH_ELEMENT* hash_find(char *text);
-void hash_print();
+HASH_ELEMENT* hash_find(HASH_ELEMENT** hashTable, char* text);
+void hash_print(HASH_ELEMENT** hashTable);
 
 #endif

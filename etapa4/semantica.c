@@ -100,30 +100,35 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[0]->tipo != AST_OP_MUL &&
       raiz->filhos[0]->tipo != AST_OP_DIV) {
       if(raiz->filhos[0]->tipo == AST_SYMBOL ||
-        raiz->filhos[0]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[0]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[0]->simbolo->tipoDado != TIPODADO_INTEIRO &&
           raiz->filhos[0]->simbolo->tipoDado != TIPODADO_FLUTUANTE &&
           raiz->filhos[0]->simbolo->tipoDado != TIPODADO_CHAR) {
-          printf("Linha %d: Operador %s is of an invalid tipo for arithmetic expression.\n", raiz->linha, raiz->filhos[0]->simbolo->text);
+          printf("Linha %d: Operador %s é de um tipo inválido para expressões aritmeticas.\n", raiz->linha, raiz->filhos[0]->simbolo->text);
         }
-      } else 
-      	printf("Linha %d: Operador de tipo inválido para a expressão aritmetica.\n", raiz->linha);
+      } else {
+			printf("Linha %d: Operador de tipo inválido para a expressão aritmetica.\n", raiz->linha);
+		}
     }
-
+//caso do sinal de menos na frente
+if(raiz->filhos[1] != 0){
     if(raiz->filhos[1]->tipo != AST_OP_SUM &&
       raiz->filhos[1]->tipo != AST_OP_SUB &&
       raiz->filhos[1]->tipo != AST_OP_MUL &&
       raiz->filhos[1]->tipo != AST_OP_DIV) {
       if(raiz->filhos[1]->tipo == AST_SYMBOL ||
-        raiz->filhos[1]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[1]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[1]->simbolo->tipoDado != TIPODADO_INTEIRO &&
           raiz->filhos[1]->simbolo->tipoDado != TIPODADO_FLUTUANTE &&
           raiz->filhos[1]->simbolo->tipoDado != TIPODADO_CHAR) {
-          printf("Linha %d: Operador %s is of an invalid tipo for arithmetic expression.\n", raiz->linha, raiz->filhos[1]->simbolo->text);
+          printf("Linha %d: Operador %s é de um tipo inválido para expressões aritmeticas.\n", raiz->linha, raiz->filhos[1]->simbolo->text);
         }
       } else 
       	printf("Linha %d: Operador de tipo inválido para a expressão aritmetica.\n", raiz->linha);
     }
+}
   }
 
   // Verifica tipos dos operandos de expressões relacionais
@@ -133,11 +138,12 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[0]->tipo != AST_OP_MUL &&
       raiz->filhos[0]->tipo != AST_OP_DIV) {
       if(raiz->filhos[0]->tipo == AST_SYMBOL ||
-        raiz->filhos[0]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[0]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[0]->simbolo->tipoDado != TIPODADO_INTEIRO &&
           raiz->filhos[0]->simbolo->tipoDado != TIPODADO_FLUTUANTE &&
           raiz->filhos[0]->simbolo->tipoDado != TIPODADO_CHAR) {
-          printf("Linha %d: Operador %s is of an invalid tipo for relational expression.\n", raiz->linha, raiz->filhos[0]->simbolo->text);
+          printf("Linha %d: Operador %s é de um tipo inválido para expressões relacionais.\n", raiz->linha, raiz->filhos[0]->simbolo->text);
         }
       } else 
       	printf("Linha %d: Expressão relacional possui operador de tipo inválido.\n", raiz->linha);
@@ -148,11 +154,12 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[1]->tipo != AST_OP_MUL &&
       raiz->filhos[1]->tipo != AST_OP_DIV) {
       if(raiz->filhos[1]->tipo == AST_SYMBOL ||
-        raiz->filhos[1]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[1]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[1]->simbolo->tipoDado != TIPODADO_INTEIRO &&
           raiz->filhos[1]->simbolo->tipoDado != TIPODADO_FLUTUANTE &&
           raiz->filhos[1]->simbolo->tipoDado != TIPODADO_CHAR) {
-          printf("Linha %d: Operador %s is of an invalid tipo for relational expression.\n", raiz->linha, raiz->filhos[1]->simbolo->text);
+          printf("Linha %d: Operador %s é de um tipo inválido para expressões relacionais.\n", raiz->linha, raiz->filhos[1]->simbolo->text);
         }
       } else 
       	printf("Linha %d: Expressão relacional possui operador de tipo inválido.\n", raiz->linha);
@@ -171,7 +178,8 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[0]->tipo != AST_OP_AND &&
       raiz->filhos[0]->tipo != AST_OP_OR) {
       if(raiz->filhos[0]->tipo == AST_SYMBOL ||
-        raiz->filhos[0]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[0]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[0]->simbolo->tipoDado != TIPODADO_BOOLEANO) {
           printf("Linha %d: Operador %s é de um tipo inválido para expressões lógicas.\n", raiz->linha, raiz->filhos[0]->simbolo->text);
         }
@@ -188,7 +196,8 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[1]->tipo != AST_OP_AND &&
       raiz->filhos[1]->tipo != AST_OP_OR) {
       if(raiz->filhos[1]->tipo == AST_SYMBOL ||
-        raiz->filhos[1]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[1]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[1]->simbolo->tipoDado != TIPODADO_BOOLEANO) {
           printf("Linha %d: Operador %s é de um tipo inválido para expressões lógicas.\n", raiz->linha, raiz->filhos[1]->simbolo->text);
         }
@@ -205,7 +214,8 @@ void verificaTipoDados(AST* raiz) {
       raiz->filhos[0]->tipo != AST_OP_MUL &&
       raiz->filhos[0]->tipo != AST_OP_DIV) {
       if(raiz->filhos[0]->tipo == AST_SYMBOL ||
-        raiz->filhos[0]->tipo == AST_SYMBOL_VEC) {
+        raiz->filhos[0]->tipo == AST_SYMBOL_VEC ||
+        raiz->filhos[0]->tipo == AST_SYMBOL_LIT) {
         if(raiz->filhos[0]->simbolo->tipoDado != TIPODADO_INTEIRO &&
           raiz->filhos[0]->simbolo->tipoDado != TIPODADO_CHAR) {
           printf("Linha %d: indice do vetor %s é de um tipo inválido.\n", raiz->linha, raiz->filhos[0]->simbolo->text);

@@ -64,7 +64,7 @@
 // criada a regra s para conseguir chamar a impressão da árvore
 s : programa { $$ = $1; imprimeArvore($$); astImprimeArvoreArquivo($$); verificaDeclaracoes($$); verificaUtilizacao($$); verificaTipoDados($$); /*imprimir arvore aqui...*/ }
  
-programa: decl_global programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
+programa: decl_global programa { $$ = criaASTNovoEscopo(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
   | def_funcao programa { $$ = criaAST(AST_PROG, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }
   | { $$ = criaAST(AST_EMPTY, NULL, NULL, 0); }
   ;
@@ -125,7 +125,7 @@ comando: bloco_comando { $$ = $1; }
   | chamada_funcao ';' { $$ = criaAST(AST_COM, NULL, criaNodos($1, NULL, NULL, NULL, 1), 1); }
   ;
 
-bloco_comando: '{' seq_comando '}' { $$ = criaAST(AST_BLO_COM, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }
+bloco_comando: '{' seq_comando '}' { $$ = criaASTNovoEscopo(AST_BLO_COM, NULL, criaNodos($2, NULL, NULL, NULL, 1), 1); }
   ;
   
 seq_comando: comando seq_comando { $$ = criaAST(AST_SEQ, NULL, criaNodos($1, $2, NULL, NULL, 2), 2); }

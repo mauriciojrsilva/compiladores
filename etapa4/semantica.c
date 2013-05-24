@@ -3,7 +3,7 @@
 
 void verificaDeclaracoes(AST* raiz) {
 	if (raiz == 0) return;
-		
+	
 	// deve-se verificar as declarações somente se o nodo da AST for uma declaração (de variável, vetor, função ou parâmetro de função)
 	if (raiz->tipo == AST_DECL_VAR || raiz->tipo == AST_DECL_VEC || raiz->tipo == AST_DEF_F || raiz->tipo == AST_PARAM) {
 	
@@ -34,7 +34,7 @@ void verificaDeclaracoes(AST* raiz) {
 			}
 		}
 	}
-	
+
 	// chama recursivamente os filhos para continuar a verificação de declarações de identificadores...
 	int i;
 	for (i = 0; i < raiz->numFilhos; i++) {

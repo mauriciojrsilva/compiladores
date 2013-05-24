@@ -66,15 +66,20 @@
 #define AST_EMPTY               43
 
 typedef struct AST {
-  int tipo, numFilhos, linha;
+  int tipo, numFilhos, linha, numHashTablesPai, inicioEscopo;
 	HASH_ELEMENT* simbolo;
+	HASH_ELEMENT** hashTable;
+	HASH_ELEMENT*** hashTablesPai;
   struct AST** filhos;
 } AST;
 
 // protótipos das funções
 AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
+AST* criaASTNovoEscopo(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
 AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos);
 void criaNodo(AST** filhos, AST* filho, int* index);
+void passaHashTableParaFilhos(HASH_ELEMENT** hashTable, AST** filhos, int numFilhos);
+void insereHashTableEmListaDePaisNoNodo(AST* nodo, HASH_ELEMENT** hashTable);
 void imprimeArvore(AST *raiz);
 int mapTipoDado(int type);
 

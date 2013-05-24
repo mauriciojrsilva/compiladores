@@ -39,11 +39,11 @@ retorna { return TK_PR_RETORNA;	}
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$" { return yytext[0];	}
 
-{letra}({letra}|{digito})* { yylval.symbol = hash_insert(SIMBOLO_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
-{digito}+ { yylval.symbol = hash_insert(SIMBOLO_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO; }
-{digito}+"."{digito}+ { yylval.symbol = hash_insert(SIMBOLO_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
-\'.\' { yylval.symbol = hash_insert(SIMBOLO_LIT_CHAR, yytext); return TK_LIT_CARACTERE; }
-\"[^"]*\" { yylval.symbol = hash_insert(SIMBOLO_LIT_CADEIA, yytext); return TK_LIT_CADEIA; }
+{letra}({letra}|{digito})* { yylval.symbol = hashElement_create(SIMBOLO_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
+{digito}+ { yylval.symbol = hashElement_create(SIMBOLO_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO; }
+{digito}+"."{digito}+ { yylval.symbol = hashElement_create(SIMBOLO_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
+\'.\' { yylval.symbol = hashElement_create(SIMBOLO_LIT_CHAR, yytext); return TK_LIT_CARACTERE; }
+\"[^"]*\" { yylval.symbol = hashElement_create(SIMBOLO_LIT_CADEIA, yytext); return TK_LIT_CADEIA; }
 
 "//".* {}
 

@@ -122,7 +122,7 @@ void astPrintNodo(AST *nodo) {
   }
  
   if (nodo->simbolo != 0)
-          printf(", %s", nodo->simbolo->text);
+    printf(", %s", nodo->simbolo->text);
          
   printf(");\n");
 }
@@ -376,5 +376,16 @@ void astImprimeArvoreArquivo(AST* nodo) {
     	fprintf(yyout, "");
     break;
     default: break;
+  }
+}
+
+int mapTipoDado(int type) {
+  switch(type) {
+    case AST_T_BOO: return TIPODADO_BOOLEANO;
+    case AST_T_CHA: return TIPODADO_CHAR;
+    case AST_T_INT: return TIPODADO_INTEIRO;
+    case AST_T_FLO: return TIPODADO_FLUTUANTE;        
+    case AST_T_STR: return TIPODADO_CADEIA;
+    default: return 0;
   }
 }

@@ -68,22 +68,15 @@
 
 #define AST_EMPTY               43
 
-typedef struct AST_FILHOS {
-	int quantidade;
-	struct AST** items;
-} AST_FILHOS;
-
 typedef struct AST {
-  int tipo, numFilhos, linha, numHashTablesPai, inicioEscopo;
+  int tipo, numFilhos, linha, numHashTablesPai, inicioEscopo, comErro, tipoErro;
 	HASH_ELEMENT* simbolo;
 	HASH_ELEMENT** hashTable;
 	HASH_ELEMENT*** hashTablesPai;
   struct AST** filhos;
-  AST_FILHOS* filhoz;
 } AST;
 
 // protótipos das funções
-AST_FILHOS* criaFilhoz();
 void insereEmLista(AST** filhos, AST* filho);
 void insereFilho(AST* nodo, AST* filho);
 void insereDoisFilhos(AST* nodo, AST* filhoUm, AST* filhoDois);
@@ -92,6 +85,8 @@ void insereQuatroFilhos(AST* nodo, AST* filhoUm, AST* filhoDois, AST* filhoTres,
 void insereFilhos(AST* nodo, int numFilhos, ...);
 AST** geraListaFilhos(int numFilhos, ...);
 AST* criaASTSimples(int tipo);
+AST* criaASTComEscopo(int tipo);
+AST* criaASTComErro(int tipo, int tipoErro);
 AST* criaASTDeclaraVar(int tipo, HASH_ELEMENT* simbolo, int tipoFilho);
 AST* criaASTAtribuiVar(int tipo, HASH_ELEMENT* simbolo);
 AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
@@ -100,7 +95,8 @@ AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos);
 void criaNodo(AST** filhos, AST* filho, int* index);
 void passaHashTableParaFilhos(HASH_ELEMENT** hashTable, AST** filhos, int numFilhos);
 void insereHashTableEmListaDePaisNoNodo(AST* nodo, HASH_ELEMENT** hashTable);
-void imprimeArvore(AST *raiz);
+void imprimeArvore(AST* raiz);
+void astPrintNodo(AST* nodo);
 void astImprimeArvoreArquivo(AST* nodo, int nivel);
 char* generateSpaces(int num);
 int mapTipoDado(int tipo);

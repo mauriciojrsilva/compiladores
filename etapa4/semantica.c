@@ -4,6 +4,7 @@
 void verificaDeclaracoes(AST* raiz) {
 	if (raiz == 0) return;
 	
+  //astPrintNodo(raiz);
 	// deve-se verificar as declarações somente se o nodo da AST for uma declaração (de variável, vetor, função ou parâmetro de função)
 	if (raiz->tipo == AST_DECL_VAR || raiz->tipo == AST_DECL_VEC || raiz->tipo == AST_DEF_F || raiz->tipo == AST_PARAM) {
 	
@@ -15,7 +16,7 @@ void verificaDeclaracoes(AST* raiz) {
       //printf("VD - AST tipo(%d), simbolo token(%d) text(%s) tipoDado(%d)\n", raiz->tipo, raiz->simbolo->token, raiz->simbolo->text, raiz->simbolo->tipoDado);
 			
 			// inicialmente o elemento da hashtable retorna um token de identificador. se ele retornar um token diferente, é porque o símbolo já foi definido
-      HASH_ELEMENT* he = hash_find(raiz->hashTable, raiz->simbolo->text);
+      //HASH_ELEMENT* he = hash_find(raiz->hashTable, raiz->simbolo->text);
 			if (raiz->simbolo->token != SIMBOLO_IDENTIFICADOR) {				
 				printf("Linha %d: Identificador %s já definido.\n", raiz->linha, raiz->simbolo->text);
 			}			

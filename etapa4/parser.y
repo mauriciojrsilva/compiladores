@@ -3,18 +3,15 @@
 #include "ast.h"
 #include "hash.h"
 #include "semantica.h"
+#include "error_handling.h"
+
+AST* raiz = NULL;
 
 %}
 
 %union {
   AST* astree;
   HASH_ELEMENT* symbol;
-  AST_FILHOS* filhos;
-  /*AST* bloco;
-  AST* statement;
-  AST* identificador;
-  AST* declVar;
-  AST_FILHOS* */
 }
 
 /* Declaração dos tokens da gramática da Linguagem K */
@@ -60,9 +57,8 @@
 %left '+' '-'
 %left '*' '/'
 
-%type <astree> s 
-%type <astree> programa	
-//%type <astree> statements 
+%type <astree> s
+%type <astree> programa
 %type <astree> decl_global	
 %type <astree> decl_local	
 %type <astree> decl_var	
@@ -92,11 +88,12 @@
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; /*imprimeTest($1, 0);*/ imprimeArvore($$); /*astImprimeArvoreArquivo($$, 0);*/ /*verificaDeclaracoes($$); verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
- 
-programa: programa decl_global { insereFilho($1, $2); /*printf("PROG - dg prog\n");*/ }
-  | programa def_funcao { insereFilho($1, $2); /*printf("PROG - df prog\n");*/ }
-  | { $$ = criaASTSimples(AST_PROG); }
+s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeTest($1, 0);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\n\nAnalise semantica\n"); verificaDeclaracoes($$);*/ /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
+  ;
+
+programa: programa decl_global { if (raiz == NULL) raiz = criaASTComEscopo(AST_PROG); $$ = raiz; insereFilho($$, $2); /*printf("PROG - dg prog\n");*/ }
+  | programa def_funcao { if (raiz == NULL) raiz = criaASTComEscopo(AST_PROG); $$ = raiz; insereFilho($$, $2); /*printf("PROG - df prog\n");*/ }
+  | { $$ = criaASTSimples(AST_EMPTY); /*printf("EMPTY \n");*/ }
   ;
 
 decl_global: decl_var ';' { $$ = criaASTSimples(AST_DECL_GL); insereFilho($$, $1); /*printf("DECL_GLOBAL - dvar\n");*/ }
@@ -108,6 +105,7 @@ decl_local: decl_local decl_var ';' { insereFilho($1, $2); }
 	;
   
 decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = criaASTDeclaraVar(AST_DECL_VAR, $1, $3->tipo); insereFilho($$, $3); /* TODO: retirar o 'insereFilho' */ /*printf("DECL_VAR - only (%s)\n", $1->text);*/ }
+  | ':' tipo_var { $$ = criaASTComErro(AST_DECL_VAR, SEM_IDENTIFICADOR); insereFilho($$, $2); }  
   ;
 
 decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = criaASTDeclaraVar(AST_DECL_VEC, $1, $3->tipo); insereDoisFilhos($$, $3, criaASTDeclaraVar(AST_VEC_SIZE, $5, TIPODADO_INTEIRO)); /* TODO: retirar o 'insereFilho' */ }

@@ -11,12 +11,16 @@ void verificaDeclaracoes(AST* raiz) {
 		if (raiz->simbolo == 0) {
     	printf("Linha %d: Declaração de identificador: faltando o nome do identificador.\n", raiz->linha);
     } else {
+
+      //printf("VD - AST tipo(%d), simbolo token(%d) text(%s) tipoDado(%d)\n", raiz->tipo, raiz->simbolo->token, raiz->simbolo->text, raiz->simbolo->tipoDado);
 			
 			// inicialmente o elemento da hashtable retorna um token de identificador. se ele retornar um token diferente, é porque o símbolo já foi definido
+      HASH_ELEMENT* he = hash_find(raiz->hashTable, raiz->simbolo->text);
 			if (raiz->simbolo->token != SIMBOLO_IDENTIFICADOR) {				
 				printf("Linha %d: Identificador %s já definido.\n", raiz->linha, raiz->simbolo->text);
 			}			
 			
+      //printf("VD - AST tipo(%d)\n", raiz->tipo);
 			// define o tipo (token) do símbolo
 			switch(raiz->tipo) { 
 				case AST_DECL_VAR: 
@@ -35,6 +39,12 @@ void verificaDeclaracoes(AST* raiz) {
 		}
 	}
 
+  /*printf("VD - AST tipo(%d) iniciaEscopo(%d) hashtable print\n", raiz->tipo, raiz->inicioEscopo);
+  if (raiz->hashTable != NULL)
+    hash_print(raiz->hashTable);
+  else
+    printf("VD - AST tipo(%d) hashtable NULL\n", raiz->tipo);*/
+
 	// chama recursivamente os filhos para continuar a verificação de declarações de identificadores...
 	int i;
 	for (i = 0; i < raiz->numFilhos; i++) {
@@ -49,6 +59,8 @@ void verificaUtilizacao(AST* raiz) {
 	// verifica a utilização das variáveis (escalares)
   if (raiz->tipo == AST_SYMBOL || raiz->tipo == AST_ATR_VAR) {
 		
+    //printf("VU - AST tipo(%d), simbolo token(%d) text(%s) tipoDado(%d)\n", raiz->tipo, raiz->simbolo->token, raiz->simbolo->text, raiz->simbolo->tipoDado);
+
 		if (raiz->simbolo->token == SIMBOLO_VETOR) {
     	printf("Linha %d: Vetor %s sendo usado como escalar.\n", raiz->linha, raiz->simbolo->text);
     } else if (raiz->simbolo->token == SIMBOLO_FUNCAO) {
@@ -233,7 +245,7 @@ if(raiz->filhos[1] != 0){
 
 // função auxiliar para verificar a consistência dos parâmetros de chamadas de funções
 void verificaChamadaFuncao(AST* raiz) { 
-	//if (raiz == 0) return;
+	if (raiz == 0) return;
       
   if (raiz->tipo == AST_CHAM_F) {
 		AST *params = raiz->simbolo->ast;

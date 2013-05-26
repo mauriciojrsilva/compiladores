@@ -87,6 +87,7 @@ AST** geraListaFilhos(int numFilhos, ...);
 AST* criaASTSimples(int tipo);
 AST* criaASTComEscopo(int tipo);
 AST* criaASTComErro(int tipo, int tipoErro);
+AST* criaASTDefFunc(int tipo, AST* header);
 AST* criaASTDeclaraVar(int tipo, HASH_ELEMENT* simbolo, int tipoFilho);
 AST* criaASTAtribuiVar(int tipo, HASH_ELEMENT* simbolo);
 AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);

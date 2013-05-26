@@ -88,7 +88,7 @@ AST* raiz = NULL;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeTest($1, 0);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\n\nAnalise semantica\n"); verificaDeclaracoes($$);*/ /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeTest($1, 0);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\nAnalise semantica\n");*/ verificaDeclaracoes($$); /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
   ;
 
 programa: programa decl_global { if (raiz == NULL) raiz = criaASTComEscopo(AST_PROG); $$ = raiz; insereFilho($$, $2); /*printf("PROG - dg prog\n");*/ }
@@ -118,8 +118,8 @@ tipo_var: TK_PR_INTEIRO { $$ = criaASTSimples(AST_T_INT); }
         | TK_PR_CADEIA { $$ = criaASTSimples(AST_T_STR); }
         ;
 
-def_funcao: cabecalho decl_local bloco_comando { $$ = criaASTSimples(AST_DEF_F); insereTresFilhos($$, $1, $2, $3); }
-  | cabecalho bloco_comando { $$ = criaASTSimples(AST_DEF_F); insereDoisFilhos($$, $1, $2); }
+def_funcao: cabecalho decl_local bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1); insereTresFilhos($$, $1, $2, $3); }
+  | cabecalho bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1); insereDoisFilhos($$, $1, $2); }
   ;
   
 chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = criaASTDeclaraVar(AST_CHAM_F, $1, -1); insereFilho($$, $3); }

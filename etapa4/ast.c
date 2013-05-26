@@ -104,6 +104,12 @@ AST* criaASTDeclaraVar(int tipo, HASH_ELEMENT* simbolo, int tipoFilho) {
   return nodo;
 }
 
+AST* criaASTDefFunc(int tipo, AST* header) {
+  AST* nodo = criaASTSimples(tipo);
+  nodo->simbolo = header->simbolo;
+  return nodo;
+}
+
 AST* criaASTAtribuiVar(int tipo, HASH_ELEMENT* simbolo) {
   AST* nodo = criaASTSimples(tipo);
   nodo->simbolo = simbolo;

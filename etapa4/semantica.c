@@ -41,7 +41,7 @@ void verificaDeclaracoes(AST* raiz) {
             he->token == SIMBOLO_PARAM))
           he->count++;
       }
-      
+
 			switch(raiz->tipo) { 
 				case AST_DECL_VAR: 
 					raiz->simbolo->token = SIMBOLO_VARIAVEL;
@@ -68,23 +68,37 @@ void verificaDeclaracoes(AST* raiz) {
 // função semântica que verifica a utilização dos identificadores
 void verificaUtilizacao(AST* raiz) {
 	if (raiz == 0) return;
-	
-	// verifica a utilização das variáveis (escalares)
-  if (raiz->tipo == AST_SYMBOL || raiz->tipo == AST_ATR_VAR) {
-		
-    //printf("VU - AST tipo(%d), simbolo token(%d) text(%s) tipoDado(%d)\n", raiz->tipo, raiz->simbolo->token, raiz->simbolo->text, raiz->simbolo->tipoDado);
 
-		if (raiz->simbolo->token == SIMBOLO_VETOR) {
+  int i;
+	
+  //printf("\n");
+  //astPrintNodo(raiz);  
+	// verifica a utilização das variáveis (escalares)
+  if (raiz->tipo == AST_SYMBOL || raiz->tipo == AST_ATR_VAR) {    
+
+    HASH_ELEMENT* heInterno = hash_find(raiz->hashTable, raiz->simbolo->text);
+    HASH_ELEMENT* heExterno = hash_find_outer(raiz, raiz->simbolo->text);
+    /*element_print(heInterno);
+    if (heExterno != NULL)
+      element_print(heExterno);*/
+
+		if ((heInterno != NULL && heInterno->token == SIMBOLO_VETOR) || 
+    (heExterno != NULL && heExterno->token == SIMBOLO_VETOR)) {
     	printf("Linha %d: Vetor %s sendo usado como escalar.\n", raiz->linha, raiz->simbolo->text);
-    } else if (raiz->simbolo->token == SIMBOLO_FUNCAO) {
+    } else if ((heInterno != NULL && heInterno->token == SIMBOLO_FUNCAO) || 
+      (heExterno != NULL && heExterno->token == SIMBOLO_FUNCAO)) {
     	printf("Linha %d: Função %s sendo usada como escalar.\n", raiz->linha, raiz->simbolo->text);
-    } else if (raiz->simbolo->token != SIMBOLO_VARIAVEL && raiz->simbolo->token != SIMBOLO_PARAM) {
+    } else if ((heInterno != NULL && heInterno->token != SIMBOLO_VARIAVEL && heInterno->token != SIMBOLO_PARAM) ||
+    (heExterno != NULL && heExterno->token != SIMBOLO_VARIAVEL && heExterno->token != SIMBOLO_PARAM)) {
     	printf("Linha %d: Variável %s não foi declarada.\n", raiz->linha, raiz->simbolo->text);
     }
 
 	// verifica a utilização dos vetores
 	} else if (raiz->tipo == AST_SYMBOL_VEC || raiz->tipo == AST_ATR_VEC) {
  
+    HASH_ELEMENT* heInterno = hash_find(raiz->hashTable, raiz->simbolo->text);
+    HASH_ELEMENT* heExterno = hash_find_outer(raiz, raiz->simbolo->text);
+
  		if (raiz->simbolo->token == SIMBOLO_VARIAVEL || raiz->simbolo->token == SIMBOLO_PARAM) {
 			printf("Linha %d: Variável %s sendo usada como vetor.\n", raiz->linha, raiz->simbolo->text);
     } else if (raiz->simbolo->token == SIMBOLO_FUNCAO) {
@@ -94,7 +108,10 @@ void verificaUtilizacao(AST* raiz) {
     }
   
   // verifica a utilização das funções
- 	} else if (raiz->tipo == AST_CHAM_F) { 
+ 	} else if (raiz->tipo == AST_CHAM_F) {
+
+    HASH_ELEMENT* heInterno = hash_find(raiz->hashTable, raiz->simbolo->text);
+    HASH_ELEMENT* heExterno = hash_find_outer(raiz, raiz->simbolo->text);
 		
 		if (raiz->simbolo->token == SIMBOLO_VARIAVEL || raiz->simbolo->token == SIMBOLO_PARAM) {
 			printf("Linha %d: Variável %s sendo usada como função.\n", raiz->linha, raiz->simbolo->text);
@@ -108,8 +125,7 @@ void verificaUtilizacao(AST* raiz) {
 		}
 	}
 	
-	// chama recursivamente os filhos para continuar a verificação de utilização de identificadores...
-	int i;
+	// chama recursivamente os filhos para continuar a verificação de utilização de identificadores...	
 	for (i = 0; i < raiz->numFilhos; i++) {
 		verificaUtilizacao(raiz->filhos[i]);
 	}

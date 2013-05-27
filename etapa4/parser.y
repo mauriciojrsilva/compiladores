@@ -88,7 +88,7 @@ AST* raiz = NULL;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\nAnalise semantica\n");*/ verificaDeclaracoes($$); /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\nAnalise semantica\n");*/ verificaDeclaracoes($$); verificaUtilizacao($$); /*verificaTipoDados($$);*/ }
   ;
 
 programa: programa decl_global { if (raiz == NULL) raiz = criaASTComEscopo(AST_PROG); $$ = raiz; insereFilho($$, $2); /*printf("PROG - dg prog\n");*/ }

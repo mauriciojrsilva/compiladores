@@ -24,12 +24,6 @@ void insereFilho(AST* nodo, AST* filho) {
   if (nodo == NULL || filho == NULL)
     return;
 
-  /*printf("Pai - ");
-  astPrintNodo(nodo);
-  printf(" começa escopo: %d\n", nodo->inicioEscopo);
-  printf("Filho - ");
-  astPrintNodo(filho);
-  printf("\n");*/
   if (nodo->inicioEscopo) {
     passaHashTableParaFilho(nodo->hashTable, filho);
   }

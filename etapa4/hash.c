@@ -74,7 +74,7 @@ int hash_address(char *text) {
 
 HASH_ELEMENT* hash_find(HASH_ELEMENT** hashTable, char* text) {
 	int address;
-	HASH_ELEMENT *ret;
+	HASH_ELEMENT* ret;
 
 	address = hash_address(text);
 
@@ -84,6 +84,21 @@ HASH_ELEMENT* hash_find(HASH_ELEMENT** hashTable, char* text) {
 	return ret;
 }
 
+HASH_ELEMENT* hash_find_outer(AST* nodo, char* text) {
+	HASH_ELEMENT* el;
+	int i;
+	
+	for(i = 0; i < nodo->numHashTablesPai; i++) {
+		if (nodo->hashTablesPai[i] == NULL) 
+			break;
+			
+		if (el = hash_find(nodo->hashTablesPai[i], text))
+			return el;
+	}
+
+	return NULL;
+}
+
 void hash_print(HASH_ELEMENT** hashTable) {
 	int i;
 	HASH_ELEMENT* aux;
@@ -91,9 +106,13 @@ void hash_print(HASH_ELEMENT** hashTable) {
 	for(i = 0; i < SIZE; ++i){
 		aux = hashTable[i];
 		while(aux != 0) {
-			astAux = aux->ast;
-			printf("token: %d, tipo de dado: %d, nome: %s, count: %d, ast: %d\n", aux->token, aux->tipoDado, aux->text, aux->count, astAux->tipo);
+			element_print(aux);
 			aux = aux->next;
 		}
 	}
+}
+
+void element_print(HASH_ELEMENT* element) {
+	AST* astAux = element->ast;
+	printf("token: %d, tipo de dado: %d, nome: %s, count: %d, ast: %d\n", element->token, element->tipoDado, element->text, element->count, astAux->tipo);
 }

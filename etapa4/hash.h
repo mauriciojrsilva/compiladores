@@ -36,6 +36,8 @@ HASH_ELEMENT* hashElement_insert(HASH_ELEMENT** hashTable, HASH_ELEMENT* hashEle
 HASH_ELEMENT* hash_insert(HASH_ELEMENT** hashTable, int token, char *text);
 int hash_address(char *text);
 HASH_ELEMENT* hash_find(HASH_ELEMENT** hashTable, char* text);
+HASH_ELEMENT* hash_find_outer(struct AST* nodo, char* text);
 void hash_print(HASH_ELEMENT** hashTable);
+void element_print(HASH_ELEMENT* element);
 
 #endif

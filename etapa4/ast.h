@@ -4,8 +4,11 @@
 #include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
-#define MAX_FILHOS 4
+#define MAX_FILHOS 10
+#define MAX_ESCOPOS_INICIO 10
+#define TAXA_CRESCIMENTO_ESCOPOS 2
 
 #define AST_SYMBOL              1
 #define AST_SYMBOL_VEC          2
@@ -66,7 +69,7 @@
 #define AST_EMPTY               43
 
 typedef struct AST {
-  int tipo, numFilhos, linha, numHashTablesPai, inicioEscopo;
+  int tipo, numFilhos, linha, numHashTablesPai, inicioEscopo, comErro, tipoErro;
 	HASH_ELEMENT* simbolo;
 	HASH_ELEMENT** hashTable;
 	HASH_ELEMENT*** hashTablesPai;
@@ -74,13 +77,30 @@ typedef struct AST {
 } AST;
 
 // protótipos das funções
+void insereEmLista(AST** filhos, AST* filho);
+void insereFilho(AST* nodo, AST* filho);
+void insereDoisFilhos(AST* nodo, AST* filhoUm, AST* filhoDois);
+void insereTresFilhos(AST* nodo, AST* filhoUm, AST* filhoDois, AST* filhoTres);
+void insereQuatroFilhos(AST* nodo, AST* filhoUm, AST* filhoDois, AST* filhoTres, AST* filhoQuatro);
+void insereFilhos(AST* nodo, int numFilhos, ...);
+AST** geraListaFilhos(int numFilhos, ...);
+AST* criaASTSimples(int tipo);
+AST* criaASTSimplesDois(int tipo, HASH_ELEMENT* simbolo);
+AST* criaASTSimplesTres(int tipo, HASH_ELEMENT* simbolo, int tipoFilho);
+AST* criaASTComEscopo(int tipo);
+AST* criaASTComErro(int tipo, int tipoErro);
+AST* criaASTDefFunc(int tipo, AST* cabecalho, AST* locais, AST* bloco);
 AST* criaAST(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
 AST* criaASTNovoEscopo(int tipo, HASH_ELEMENT* simbolo, AST** filhos, int numFilhos);
 AST** criaNodos(AST* f1, AST* f2, AST* f3, AST* f4, int numFilhos);
 void criaNodo(AST** filhos, AST* filho, int* index);
+void passaHashTableParaFilho(HASH_ELEMENT** hashTable, AST* filho);
 void passaHashTableParaFilhos(HASH_ELEMENT** hashTable, AST** filhos, int numFilhos);
 void insereHashTableEmListaDePaisNoNodo(AST* nodo, HASH_ELEMENT** hashTable);
-void imprimeArvore(AST *raiz);
-int mapTipoDado(int type);
+void imprimeArvore(AST* raiz);
+void astPrintNodo(AST* nodo);
+void astImprimeArvoreArquivo(AST* nodo, int nivel);
+char* generateSpaces(int num);
+int mapTipoDado(int tipo);
 
 #endif

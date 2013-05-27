@@ -20,13 +20,14 @@
 #define TIPODADO_CHAR                   3
 #define TIPODADO_BOOLEANO               4
 #define TIPODADO_CADEIA                 5
+#define TIPODADO_VETOR                 	6
 
 typedef struct hash_t {
-        int token;
-        int tipoDado;
-        struct AST *ast;
+        int token, tipoDado, count;
+        struct AST* ast;
         char *text;
-        struct hash_t *next;
+        struct hash_t* valor;
+        struct hash_t* next;
 } HASH_ELEMENT;
 
 HASH_ELEMENT** hash_init();

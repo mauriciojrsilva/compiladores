@@ -4,27 +4,44 @@
 void verificaDeclaracoes(AST* raiz) {
 	if (raiz == 0) return;
 	
-  //astPrintNodo(raiz);
+  int i;
+  // DEBUG
+  /*if (raiz->tipo == AST_BLO_COM) {
+    printf("começa escopo: %d\n", raiz->inicioEscopo);
+    astPrintNodo(raiz);
+    hash_print(raiz->hashTable);  
+    for(i = 0; i < 5; i++) {
+      if (raiz->hashTablesPai[i] != NULL) {
+        printf("hash table pai numero: %d\n", i);
+        hash_print(raiz->hashTablesPai[i]);
+      }
+    }
+  }*/
+
 	// deve-se verificar as declarações somente se o nodo da AST for uma declaração (de variável, vetor, função ou parâmetro de função)
 	if (raiz->tipo == AST_DECL_VAR || raiz->tipo == AST_DECL_VEC || raiz->tipo == AST_DEF_F || raiz->tipo == AST_PARAM) {
-	
-    //astPrintNodo(raiz);
 
 		// verifica se foi colocado o nome do identificador
 		if (raiz->simbolo == 0) {
     	printf("Linha %d: Declaração de identificador: faltando o nome do identificador.\n", raiz->linha);
     } else {
 
-      //printf("VD - AST tipo(%d), simbolo token(%d) text(%s) tipoDado(%d)\n", raiz->tipo, raiz->simbolo->token, raiz->simbolo->text, raiz->simbolo->tipoDado);
-			
-			// inicialmente o elemento da hashtable retorna um token de identificador. se ele retornar um token diferente, é porque o símbolo já foi definido
-      //HASH_ELEMENT* he = hash_find(raiz->hashTable, raiz->simbolo->text);
-			if (raiz->simbolo->token != SIMBOLO_IDENTIFICADOR) {				
-				printf("Linha %d: Identificador %s já definido.\n", raiz->linha, raiz->simbolo->text);
-			}			
-			
-      //printf("VD - AST tipo(%d)\n", raiz->tipo);
-			// define o tipo (token) do símbolo
+			// inicialmente o elemento da hashtable retorna um token de identificador. se ele retornar um token diferente, é porque o símbolo já foi definido      
+      HASH_ELEMENT* he = hash_find(raiz->hashTable, raiz->simbolo->text);
+      if (he != NULL) { 
+
+        if (he->count > 0) {				
+				  printf("Linha %d: Identificador %s já definido.\n", raiz->linha, raiz->simbolo->text);
+			  }
+
+        if (he->token == raiz->simbolo->token && 
+            (he->token == SIMBOLO_VARIAVEL|| 
+            he->token == SIMBOLO_VETOR|| 
+            he->token == SIMBOLO_FUNCAO|| 
+            he->token == SIMBOLO_PARAM))
+          he->count++;
+      }
+      
 			switch(raiz->tipo) { 
 				case AST_DECL_VAR: 
 					raiz->simbolo->token = SIMBOLO_VARIAVEL;
@@ -42,14 +59,7 @@ void verificaDeclaracoes(AST* raiz) {
 		}
 	}
 
-  /*printf("VD - AST tipo(%d) iniciaEscopo(%d) hashtable print\n", raiz->tipo, raiz->inicioEscopo);
-  if (raiz->hashTable != NULL)
-    hash_print(raiz->hashTable);
-  else
-    printf("VD - AST tipo(%d) hashtable NULL\n", raiz->tipo);*/
-
-	// chama recursivamente os filhos para continuar a verificação de declarações de identificadores...
-	int i;
+	// chama recursivamente os filhos para continuar a verificação de declarações de identificadores...	
 	for (i = 0; i < raiz->numFilhos; i++) {
 		verificaDeclaracoes(raiz->filhos[i]);
 	}	

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hash.h"
+#include "ast.h"
 
 #define SIZE 997
 
@@ -19,6 +20,8 @@ HASH_ELEMENT* hashElement_create(int token, char* text) {
 	element->text = (char*)calloc(strlen(text)+1,sizeof(char));
 	strcpy(element->text, text);
 	element->next = 0;
+	element->tipoDado = 0;
+	element->count = 0;
 
 	return element;
 }
@@ -27,8 +30,10 @@ HASH_ELEMENT* hashElement_insert(HASH_ELEMENT** hashTable, HASH_ELEMENT* hashEle
 	int address;
 	HASH_ELEMENT *element;
 
-	if (element = hash_find(hashTable, hashElement->text))
+	if (element = hash_find(hashTable, hashElement->text)) {
+
 		return element;
+	}
 
 	address = hash_address(hashElement->text);
 	hashElement->next = hashTable[address];
@@ -62,7 +67,7 @@ int hash_address(char *text) {
 	int address=1;
 	int textlen = strlen(text);
 	for(i = 0; i < textlen; ++i) {
-					address = (address * text[i]) % SIZE + 1;
+		address = (address * text[i]) % SIZE + 1;
 	}
 	return address - 1;
 }
@@ -81,11 +86,13 @@ HASH_ELEMENT* hash_find(HASH_ELEMENT** hashTable, char* text) {
 
 void hash_print(HASH_ELEMENT** hashTable) {
 	int i;
-	HASH_ELEMENT *aux;
+	HASH_ELEMENT* aux;
+	AST* astAux;
 	for(i = 0; i < SIZE; ++i){
 		aux = hashTable[i];
 		while(aux != 0) {
-			printf("%d %s\n", aux->token, aux->text);
+			astAux = aux->ast;
+			printf("token: %d, tipo de dado: %d, nome: %s, count: %d, ast: %d\n", aux->token, aux->tipoDado, aux->text, aux->count, astAux->tipo);
 			aux = aux->next;
 		}
 	}

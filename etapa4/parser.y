@@ -104,11 +104,11 @@ decl_local: decl_local decl_var ';' { insereFilho($1, $2); }
 	| decl_var ';' { $$ = criaASTSimples(AST_DECL_LOC); insereFilho($$, $1); }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = criaASTDeclaraVar(AST_DECL_VAR, $1, $3->tipo); insereFilho($$, $3); /* TODO: retirar o 'insereFilho' */ /*printf("DECL_VAR - only (%s)\n", $1->text);*/ }
+decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = criaASTSimplesTres(AST_DECL_VAR, $1, $3->tipo); $1->token = SIMBOLO_VARIAVEL; insereFilho($$, $3); /* TODO: retirar o 'insereFilho' */ /*printf("DECL_VAR - only (%s)\n", $1->text);*/ }
   | ':' tipo_var { $$ = criaASTComErro(AST_DECL_VAR, SEM_IDENTIFICADOR); insereFilho($$, $2); }  
   ;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = criaASTDeclaraVar(AST_DECL_VEC, $1, $3->tipo); insereDoisFilhos($$, $3, criaASTDeclaraVar(AST_VEC_SIZE, $5, TIPODADO_INTEIRO)); /* TODO: retirar o 'insereFilho' */ }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = criaASTSimplesTres(AST_DECL_VEC, $1, $3->tipo); $1->token = SIMBOLO_VETOR; insereDoisFilhos($$, $3, criaASTSimplesTres(AST_VEC_SIZE, $5, TIPODADO_INTEIRO)); /* TODO: retirar o 'insereFilho' */ }
 	;
 
 tipo_var: TK_PR_INTEIRO { $$ = criaASTSimples(AST_T_INT); }
@@ -118,15 +118,15 @@ tipo_var: TK_PR_INTEIRO { $$ = criaASTSimples(AST_T_INT); }
         | TK_PR_CADEIA { $$ = criaASTSimples(AST_T_STR); }
         ;
 
-def_funcao: cabecalho decl_local bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1); insereTresFilhos($$, $1, $2, $3); }
-  | cabecalho bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1); insereDoisFilhos($$, $1, $2); }
+def_funcao: cabecalho decl_local bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1, $2, $3); }
+  | cabecalho bloco_comando { $$ = criaASTDefFunc(AST_DEF_F, $1, NULL, $2); }
   ;
   
-chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = criaASTDeclaraVar(AST_CHAM_F, $1, -1); insereFilho($$, $3); }
+chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = criaASTSimplesTres(AST_CHAM_F, $1, -1); insereFilho($$, $3); }
 
 
 /* Function header - begin */
-cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')' { $$ = criaASTDeclaraVar(AST_HEADER, $1, $3->tipo); insereDoisFilhos($$, $3, $5); }
+cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')' { $$ = criaASTSimplesTres(AST_HEADER, $1, $3->tipo); $1->token = SIMBOLO_FUNCAO; insereDoisFilhos($$, $3, $5); }
   ;
 	
 lista_parametros: lista_parametros_nao_vazia { $$ = $1; }
@@ -137,7 +137,7 @@ lista_parametros_nao_vazia: lista_parametros_nao_vazia ',' parametro { insereFil
   | parametro { $$ = criaASTSimples(AST_LIST_P); insereFilho($$, $1); }
   ;
 
-parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = criaASTDeclaraVar(AST_PARAM, $1, $3->tipo); insereFilho($$, $3); /* TODO: retirar o 'insereFilho' */ }
+parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = criaASTSimplesTres(AST_PARAM, $1, $3->tipo); $1->token = SIMBOLO_PARAM; insereFilho($$, $3); /* TODO: retirar o 'insereFilho' */ }
   ;
 /* Function header - end */
 
@@ -154,7 +154,7 @@ comando: bloco_comando { $$ = $1; }
   | chamada_funcao ';' { $$ = $1; }
   ;
 
-bloco_comando: '{' seq_comando '}' { $$ = criaASTSimples(AST_BLO_COM); insereFilho($$, $2); }
+bloco_comando: '{' seq_comando '}' { $$ = criaASTComEscopo(AST_BLO_COM); insereFilho($$, $2); }
   ;
   
 seq_comando: seq_comando comando { insereFilho($1, $2); }
@@ -162,11 +162,11 @@ seq_comando: seq_comando comando { insereFilho($1, $2); }
   | { $$ = criaASTSimples(AST_SEQ); }
   ;
 
-atribuicao: TK_IDENTIFICADOR '=' expressao ';' { $$ = criaASTAtribuiVar(AST_ATR_VAR, $1); insereFilho($$, $3); }	
-  | TK_IDENTIFICADOR '[' expressao ']' '=' expressao ';' { $$ = criaASTAtribuiVar(AST_ATR_VEC, $1); insereDoisFilhos($$, $3, $6); }
+atribuicao: TK_IDENTIFICADOR '=' expressao ';' { $$ = criaASTSimplesDois(AST_ATR_VAR, $1); insereFilho($$, $3); }	
+  | TK_IDENTIFICADOR '[' expressao ']' '=' expressao ';' { $$ = criaASTSimplesDois(AST_ATR_VEC, $1); insereDoisFilhos($$, $3, $6); }
   ;
 
-entrada: TK_PR_ENTRADA TK_IDENTIFICADOR ';' { $$ = criaASTAtribuiVar(AST_INP, $2); }
+entrada: TK_PR_ENTRADA TK_IDENTIFICADOR ';' { $$ = criaASTSimplesDois(AST_INP, $2); }
   ;
 
 saida: TK_PR_SAIDA lista_expressoes_nao_vazia ';' { $$ = criaASTSimples(AST_OUT); insereFilho($$, $2); }
@@ -188,14 +188,14 @@ controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando { $$ = criaASTSim
   | TK_PR_ENQUANTO '(' expressao ')' comando { $$ = criaASTSimples(AST_WHILE); insereDoisFilhos($$, $3, $5); }
   ;
 
-expressao: TK_IDENTIFICADOR { $$ = criaASTAtribuiVar(AST_SYMBOL, $1); }	
-  | TK_IDENTIFICADOR '[' expressao ']' { $$ = criaASTAtribuiVar(AST_SYMBOL_VEC, $1); insereFilho($$, $3); }	
-  | TK_LIT_INTEIRO { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_INT); }
-  | TK_LIT_FLUTUANTE { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_FLO); }
-  | TK_LIT_FALSO { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_BOO); }
-  | TK_LIT_VERDADEIRO { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_BOO); }
-  | TK_LIT_CARACTERE { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_CHA); }
-  | TK_LIT_CADEIA { $$ = criaASTDeclaraVar(AST_SYMBOL_LIT, $1, AST_T_STR); }
+expressao: TK_IDENTIFICADOR { $$ = criaASTSimplesDois(AST_SYMBOL, $1); $1->token = SIMBOLO_IDENTIFICADOR; }	
+  | TK_IDENTIFICADOR '[' expressao ']' { $$ = criaASTSimplesDois(AST_SYMBOL_VEC, $1); insereFilho($$, $3); $1->token = SIMBOLO_IDENTIFICADOR; $1->tipoDado = TIPODADO_VETOR; }	
+  | TK_LIT_INTEIRO { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_INT); $1->token = SIMBOLO_LIT_INTEIRO; $1->tipoDado = TIPODADO_INTEIRO; }
+  | TK_LIT_FLUTUANTE { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_FLO); $1->token = SIMBOLO_LIT_FLUTUANTE; $1->tipoDado = TIPODADO_FLUTUANTE; }
+  | TK_LIT_FALSO { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_BOO); $1->token = SIMBOLO_LIT_FALSO; $1->tipoDado = TIPODADO_BOOLEANO; }
+  | TK_LIT_VERDADEIRO { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_BOO); $1->token = SIMBOLO_LIT_VERDADEIRO; $1->tipoDado = TIPODADO_BOOLEANO; }
+  | TK_LIT_CARACTERE { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_CHA); $1->token = SIMBOLO_LIT_CHAR; $1->tipoDado = TIPODADO_CHAR; }
+  | TK_LIT_CADEIA { $$ = criaASTSimplesTres(AST_SYMBOL_LIT, $1, AST_T_STR); $1->token = SIMBOLO_LIT_CADEIA; $1->tipoDado = TIPODADO_CADEIA; }
   | expressao '+' expressao { $$ = criaASTSimples(AST_OP_SUM); insereDoisFilhos($$, $1, $3); }
   | expressao '-' expressao { $$ = criaASTSimples(AST_OP_SUB); insereDoisFilhos($$, $1, $3); }
   | expressao '*' expressao { $$ = criaASTSimples(AST_OP_MUL); insereDoisFilhos($$, $1, $3); }

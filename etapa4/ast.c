@@ -3,7 +3,7 @@
 extern FILE *yyout;
 
 void insereEmLista(AST** filhos, AST* filho) {
-  if (filhos == NULL || filho == NULL)
+  if (filhos == NULL)
     return;
 
   int i;
@@ -21,27 +21,17 @@ void insereEmLista(AST** filhos, AST* filho) {
 }
 
 void insereFilho(AST* nodo, AST* filho) {
-  if (nodo == NULL)
+  if (nodo == NULL || filho == NULL)
     return;
 
-  /*printf("Pai  -  inicioEscopo %d - ", nodo->inicioEscopo);
+  /*printf("Pai - ");
   astPrintNodo(nodo);
-  if (nodo->hashTable == NULL)
-    printf("Hashtable do pai NULL\n");
-  printf("Filho  -  inicioEscopo %d - ", filho->inicioEscopo);
+  printf(" começa escopo: %d\n", nodo->inicioEscopo);
+  printf("Filho - ");
   astPrintNodo(filho);
   printf("\n");*/
   if (nodo->inicioEscopo) {
-    if (!filho->inicioEscopo) {
-      filho->hashTable = nodo->hashTable;
-      if (filho->simbolo != NULL) {
-        hashElement_insert(filho->hashTable, filho->simbolo);
-      }
-    } else
-      insereHashTableEmListaDePaisNoNodo(filho, nodo->hashTable);
-
-    if (filho->filhos != NULL)
-      passaHashTableParaFilhos(filho->hashTable, filho->filhos, filho->numFilhos);
+    passaHashTableParaFilho(nodo->hashTable, filho);
   }
 
   insereEmLista(nodo->filhos, filho);
@@ -97,22 +87,55 @@ AST* criaASTSimples(int tipo) {
   return nodo;
 }
 
-AST* criaASTDeclaraVar(int tipo, HASH_ELEMENT* simbolo, int tipoFilho) {
+AST* criaASTSimplesDois(int tipo, HASH_ELEMENT* simbolo) {
+  AST* nodo = criaASTSimples(tipo);
+  nodo->simbolo = simbolo;
+  nodo->simbolo->ast = nodo;
+  return nodo;
+}
+
+AST* criaASTSimplesTres(int tipo, HASH_ELEMENT* simbolo, int tipoFilho) {
   AST* nodo = criaASTSimples(tipo);
   nodo->simbolo = simbolo;
   nodo->simbolo->tipoDado = mapTipoDado(tipoFilho);
+  nodo->simbolo->ast = nodo;
   return nodo;
 }
 
-AST* criaASTDefFunc(int tipo, AST* header) {
+AST* criaASTDefFunc(int tipo, AST* cabecalho, AST* locais, AST* bloco) {
   AST* nodo = criaASTSimples(tipo);
-  nodo->simbolo = header->simbolo;
-  return nodo;
-}
+  HASH_ELEMENT** hashTableBloco = NULL;
+  int i;
+  AST* argumentsNodo = NULL;
 
-AST* criaASTAtribuiVar(int tipo, HASH_ELEMENT* simbolo) {
-  AST* nodo = criaASTSimples(tipo);
-  nodo->simbolo = simbolo;
+  nodo->simbolo = cabecalho->simbolo;
+  nodo->simbolo->ast = nodo;  
+  insereFilho(nodo, cabecalho);
+  insereFilho(nodo, bloco);
+  hashTableBloco = bloco->hashTable;
+  cabecalho->hashTable = hashTableBloco;
+  passaHashTableParaFilhos(cabecalho->hashTable, cabecalho->filhos, cabecalho->numFilhos);
+  
+  if (cabecalho->filhos != NULL && cabecalho->filhos[1] != NULL) {
+    argumentsNodo = cabecalho->filhos[1];
+    if (argumentsNodo->filhos != NULL) {      
+      for(i = 0; i < argumentsNodo->numFilhos; i++) {
+        hashElement_insert(hashTableBloco, argumentsNodo->filhos[i]->simbolo);
+      }
+    }
+  }
+
+  if (locais != NULL) {
+    locais->hashTable = hashTableBloco;
+    passaHashTableParaFilhos(locais->hashTable, locais->filhos, locais->numFilhos);
+    insereFilho(nodo, locais);
+    if (locais->filhos != NULL) {   
+      for(i = 0; i < locais->numFilhos; i++) {
+        hashElement_insert(hashTableBloco, locais->filhos[i]->simbolo);
+      }
+    }
+  }
+
   return nodo;
 }
 
@@ -175,22 +198,26 @@ void criaNodo(AST** filhos, AST* filho, int* index) {
 	}
 }
 
+void passaHashTableParaFilho(HASH_ELEMENT** hashTable, AST* filho) {
+  if (!filho->inicioEscopo && filho->tipo != AST_HEADER && filho->tipo != AST_DECL_LOC) {
+    filho->hashTable = hashTable;
+    if (filho->simbolo != NULL) {
+      hashElement_insert(filho->hashTable, filho->simbolo);
+    }
+
+    if (filho->filhos != NULL)
+      passaHashTableParaFilhos(hashTable, filho->filhos, filho->numFilhos);
+  } else
+    insereHashTableEmListaDePaisNoNodo(filho, hashTable);  
+}
+
 void passaHashTableParaFilhos(HASH_ELEMENT** hashTable, AST** filhos, int numFilhos) {
   int i;
   AST* filhoAtual;
   for (i = 0; i < numFilhos; i++) {
     filhoAtual = filhos[i];
 
-    if (!filhoAtual->inicioEscopo) {
-      filhoAtual->hashTable = hashTable;
-      if (filhoAtual->simbolo != NULL) {
-        hashElement_insert(filhoAtual->hashTable, filhoAtual->simbolo);
-      }
-    } else
-      insereHashTableEmListaDePaisNoNodo(filhoAtual, hashTable);
-    
-    if (filhos[i]->filhos != NULL)
-      passaHashTableParaFilhos(hashTable, filhoAtual->filhos, filhoAtual->numFilhos);
+    passaHashTableParaFilho(hashTable, filhoAtual);
   }
 }
 
@@ -325,7 +352,6 @@ void astPrintNodo(AST* nodo) {
          
   printf(");\n");
 }
-
 
 void imprimeArvore_aux(AST *raiz, int nivel) {
   if (raiz == 0)

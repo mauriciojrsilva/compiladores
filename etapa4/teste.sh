@@ -8,13 +8,13 @@ rm ex/final*
 if [ $# == 1 ]; then
 
 ./main ex/certo$1.txt ex/saida$1.txt
-./main ex/saida$1.txt ex/final$1.txt
+#./main ex/saida$1.txt ex/final$1.txt
 
-echo "======Diff======"
-echo ""
-sdiff ex/certo$1.txt ex/saida$1.txt
-sdiff ex/saida$1.txt ex/final$1.txt
-echo ""
+#echo "======Diff======"
+#echo ""
+#sdiff ex/certo$1.txt ex/saida$1.txt
+#sdiff ex/saida$1.txt ex/final$1.txt
+#echo ""
 
 else
 

@@ -88,7 +88,7 @@ AST* raiz = NULL;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeTest($1, 0);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\nAnalise semantica\n");*/ verificaDeclaracoes($$); /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
+s : programa { $$ = $1; /*printf("numFilhos da raiz: %d\n", $$->numFilhos);*/ /*imprimeArvore($1);*/ astImprimeArvoreArquivo($$, 0); /*printf("\n\nAnalise semantica\n");*/ verificaDeclaracoes($$); /*verificaUtilizacao($$); verificaTipoDados($$);*/ /*imprimir arvore aqui...*/ }
   ;
 
 programa: programa decl_global { if (raiz == NULL) raiz = criaASTComEscopo(AST_PROG); $$ = raiz; insereFilho($$, $2); /*printf("PROG - dg prog\n");*/ }
@@ -217,18 +217,3 @@ expressao: TK_IDENTIFICADOR { $$ = criaASTSimplesDois(AST_SYMBOL, $1); $1->token
 /* Function body - end */
 
 %%
-
-void imprimeTest(AST* raiz, int nivel) {
-  if (raiz == NULL)
-    return;
-
-  int i;
-  for(i = 0; i < nivel; i++)
-    printf("  ");
-  
-  printf("raiz (%d), filhos (%d)\n", raiz->tipo, raiz->numFilhos);
-    
-  for(i = 0; i < raiz->numFilhos; i++) {    
-    imprimeTest(raiz->filhos[i], nivel + 1);
-  }
-}

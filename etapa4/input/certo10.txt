@@ -1,0 +1,14 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+/* var : booleano; */
+variavel_caractere : caractere;
+minha_funcao : inteiro (k:flutuante, l:inteiro)
+{
+a=5;
+p=a;
+se (a==0)
+entao saida x;
+senao saida "nada";
+se (a==0) 
+entao { saida x; };
+}

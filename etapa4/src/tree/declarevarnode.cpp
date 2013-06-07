@@ -1,5 +1,3 @@
 #include "declarevarnode.h"
 
-DeclareVarNode::DeclareVarNode()
-{
-}
+DeclareVarNode::DeclareVarNode(Common::DataType dataType): dataType(dataType) {}

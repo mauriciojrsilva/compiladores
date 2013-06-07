@@ -4,7 +4,6 @@
 #include <list>
 //#include "symbol.h"
 
-
 class Node {
 
 public:

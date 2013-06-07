@@ -1,5 +1,3 @@
 #include "declarevectornode.h"
 
-DeclareVectorNode::DeclareVectorNode()
-{
-}
+DeclareVectorNode::DeclareVectorNode(Common::DataType dataType, int size): dataType(dataType) {}

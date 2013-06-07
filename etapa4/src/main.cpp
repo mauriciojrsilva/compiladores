@@ -15,12 +15,6 @@ void yyerror(char const *mensagem) {
     exit(1);
 }
 
-void test() {
-    int i = 0;
-    i++;
-    i++;
-}
-
 int main (int argc, char **argv) {
 
     // verifica validade dos parâmetros de entrada

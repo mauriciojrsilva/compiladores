@@ -1,18 +1,25 @@
 %{
 #include <stdio.h>
+#include "../tree/common.h"
 #include "../symbol.h"
 #include "../tree/node.h"
 #include "../tree/programnode.h"
 #include "../tree/declarevarnode.h"
 #include "../tree/declarevectornode.h"
+#include "../tree/typenode.h"
 
 int yylex();
 void yyerror(const char *message);
 
 %}
 
+%code requires {
+class TypeNode;
+}
+
 %union {
   Node* node;
+  TypeNode* typeNode;
   Symbol* symbol;
 }
 
@@ -65,7 +72,7 @@ void yyerror(const char *message);
 %type <node> decl_local
 %type <node> decl_var
 %type <node> decl_vetor
-%type <node> tipo_var
+%type <typeNode> tipo_var
 %type <node> def_funcao
 %type <node> chamada_funcao
 %type <node> cabecalho
@@ -106,17 +113,17 @@ decl_local: decl_local decl_var ';' { }
 	| decl_var ';' { $$ = $1; }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode(); }
+decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($3->getType()); }
   ;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode(); }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($3->getType(), atoi($5->getText().c_str())); }
 	;
 
-tipo_var: TK_PR_INTEIRO { $$ = new Node(); }
-		| TK_PR_FLUTUANTE { $$ = new Node(); }
-		| TK_PR_BOOLEANO { $$ = new Node(); }
-		| TK_PR_CARACTERE { $$ = new Node(); }
-		| TK_PR_CADEIA { $$ = new Node(); }
+tipo_var: TK_PR_INTEIRO { $$ = new TypeNode(Common::INT); }
+		| TK_PR_FLUTUANTE { $$ = new TypeNode(Common::FLOAT); }
+		| TK_PR_BOOLEANO { $$ = new TypeNode(Common::BOOL); }
+		| TK_PR_CARACTERE { $$ = new TypeNode(Common::CHAR); }
+		| TK_PR_CADEIA { $$ = new TypeNode(Common::STRING); }
         ;
 
 def_funcao: cabecalho decl_local bloco_comando { $$ = new Node(); }

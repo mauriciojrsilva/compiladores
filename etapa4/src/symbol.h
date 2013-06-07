@@ -2,46 +2,24 @@
 #define SYMBOL_H
 
 #include <string>
-
-typedef enum TokenType {
-    LIT_INTEGER,
-    LIT_FLOAT,
-    LIT_BOOL,
-    LIT_CHAR,
-    LIT_STRING,
-    IDENTIFIER,
-    VARIABLE,
-    VECTOR_VAR,
-    FUNCTION,
-    PARAMETER
-} TokenType;
-
-typedef enum DataType {
-    BOOL,
-    INTEGER,
-    FLOAT,
-    CHAR,
-    STRING,
-    VECTOR
-} DataType;
-
+#include "tree/common.h"
 
 class Symbol {
 
 public:
-    Symbol(std::string text, TokenType tokenType);
-    TokenType getTokenType() const;
-    void setTokenType(const TokenType &value);
-    DataType getDataType() const;
-    void setDataType(const DataType &value);
+    Symbol(std::string text, Common::TokenType tokenType);
+    Common::TokenType getTokenType() const;
+    void setTokenType(const Common::TokenType &value);
+    Common::DataType getDataType() const;
+    void setDataType(const Common::DataType &value);
     int getCount() const;
     void setCount(int value);
     std::string getText() const;
     void setText(const std::string &value);
 
 private:
-    TokenType tokenType;
-    DataType dataType;
+    Common::TokenType tokenType;
+    Common::DataType dataType;
     int count;
     std::string text;
     Symbol* value;

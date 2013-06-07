@@ -1,4 +1,5 @@
 %{
+#include "../tree/common.h"
 #include "../symbol.h"
 #include "../tree/node.h"
 #include "../parser/parser.hpp"
@@ -26,8 +27,8 @@ entrada { return TK_PR_ENTRADA;	}
 saida { return TK_PR_SAIDA;	}
 retorna { return TK_PR_RETORNA;	}
 
-"verdadeiro" { yylval.symbol = new Symbol(yytext, LIT_BOOL); return TK_LIT_VERDADEIRO; }
-"falso" { yylval.symbol = new Symbol(yytext, LIT_BOOL); return TK_LIT_FALSO; }
+"verdadeiro" { yylval.symbol = new Symbol(yytext, Common::LIT_BOOL); return TK_LIT_VERDADEIRO; }
+"falso" { yylval.symbol = new Symbol(yytext, Common::LIT_BOOL); return TK_LIT_FALSO; }
 
 "<=" { return TK_OC_LE; }
 ">=" { return TK_OC_GE; }
@@ -38,11 +39,11 @@ retorna { return TK_PR_RETORNA;	}
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$" { return yytext[0];	}
 
-{letra}({letra}|{digito})* { yylval.symbol = new Symbol(yytext, IDENTIFIER); return TK_IDENTIFICADOR; }
-{digito}+ { yylval.symbol = new Symbol(yytext, LIT_INTEGER); return TK_LIT_INTEIRO; }
-{digito}+"."{digito}+ { yylval.symbol = new Symbol(yytext, LIT_FLOAT); return TK_LIT_FLUTUANTE; }
-\'.\' { yylval.symbol = new Symbol(yytext, LIT_CHAR); return TK_LIT_CARACTERE; }
-\"[^"]*\" { yylval.symbol = new Symbol(yytext, LIT_STRING); return TK_LIT_CADEIA; }
+{letra}({letra}|{digito})* { yylval.symbol = new Symbol(yytext, Common::IDENTIFIER); return TK_IDENTIFICADOR; }
+{digito}+ { yylval.symbol = new Symbol(yytext, Common::LIT_INT); return TK_LIT_INTEIRO; }
+{digito}+"."{digito}+ { yylval.symbol = new Symbol(yytext, Common::LIT_FLOAT); return TK_LIT_FLUTUANTE; }
+\'.\' { yylval.symbol = new Symbol(yytext, Common::LIT_CHAR); return TK_LIT_CARACTERE; }
+\"[^"]*\" { yylval.symbol = new Symbol(yytext, Common::LIT_STRING); return TK_LIT_CADEIA; }
 
 "//".* {}
 

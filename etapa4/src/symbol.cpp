@@ -1,47 +1,39 @@
 #include "symbol.h"
 
-Symbol::Symbol(std::string text, TokenType tokenType) {
+Symbol::Symbol(std::string text, Common::TokenType tokenType) {
     this->text = text;
     this->tokenType = tokenType;
 }
 
 
-std::string Symbol::getText() const
-{
+std::string Symbol::getText() const {
     return text;
 }
 
-void Symbol::setText(const std::string &value)
-{
+void Symbol::setText(const std::string &value) {
     text = value;
 }
 
-DataType Symbol::getDataType() const
-{
+Common::DataType Symbol::getDataType() const {
     return dataType;
 }
 
-void Symbol::setDataType(const DataType &value)
-{
+void Symbol::setDataType(const Common::DataType &value) {
     dataType = value;
 }
 
-TokenType Symbol::getTokenType() const
-{
+Common::TokenType Symbol::getTokenType() const {
     return tokenType;
 }
 
-void Symbol::setTokenType(const TokenType &value)
-{
+void Symbol::setTokenType(const Common::TokenType &value) {
     tokenType = value;
 }
 
-int Symbol::getCount() const
-{
+int Symbol::getCount() const {
     return count;
 }
 
-void Symbol::setCount(int value)
-{
+void Symbol::setCount(int value) {
     count = value;
 }

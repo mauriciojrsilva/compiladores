@@ -16,5 +16,14 @@ INCLUDE_DIRECTORIES(${compiladorEtapa4_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${BASE_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${SCANNER_FILES})
 INCLUDE_DIRECTORIES(${PARSER_FILES})
-ADD_EXECUTABLE(main ${BASE_SOURCE_DIR}/main.cpp ${FLEX_scanner_OUTPUTS} ${BISON_parser_OUTPUTS} ${BASE_SOURCE_DIR}/symbol.cpp ${BASE_SOURCE_DIR}/tree/node.cpp ${BASE_SOURCE_DIR}/tree/programnode.cpp ${BASE_SOURCE_DIR}/tree/declarevarnode.cpp ${BASE_SOURCE_DIR}/tree/declarevectornode.cpp)
+ADD_EXECUTABLE(main
+${BASE_SOURCE_DIR}/main.cpp
+${FLEX_scanner_OUTPUTS}
+${BISON_parser_OUTPUTS}
+${BASE_SOURCE_DIR}/symbol.cpp
+${BASE_SOURCE_DIR}/tree/node.cpp
+${BASE_SOURCE_DIR}/tree/programnode.cpp
+${BASE_SOURCE_DIR}/tree/declarevarnode.cpp
+${BASE_SOURCE_DIR}/tree/declarevectornode.cpp
+${BASE_SOURCE_DIR}/tree/typenode.cpp)
 TARGET_LINK_LIBRARIES(main ${FLEX_LIBRARIES})

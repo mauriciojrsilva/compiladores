@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <list>
+#include <string>
 //#include "symbol.h"
 
 class Node {
@@ -9,11 +10,10 @@ class Node {
 public:
     Node();
     void addChild(Node* child);
-    virtual void printSourceCode();
-    virtual void print();
+    virtual void printSourceCode(); // = 0; Temporarily these methods won't be pure virtual, to allow the creation of instances of this class
+    virtual void print(); // = 0;
 
-private:
-    //virtual void abstractMethod() = 0;
+protected:
     std::list<Node*> children;
     //Symbol* symbol;
 };

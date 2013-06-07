@@ -6,20 +6,18 @@
 #include "../tree/programnode.h"
 #include "../tree/declarevarnode.h"
 #include "../tree/declarevectornode.h"
-#include "../tree/typenode.h"
 
 int yylex();
 void yyerror(const char *message);
 
 %}
 
-%code requires {
-class TypeNode;
-}
+/*%code requires {
+}*/
 
 %union {
   Node* node;
-  TypeNode* typeNode;
+  Common::DataType dataType;
   Symbol* symbol;
 }
 
@@ -72,7 +70,7 @@ class TypeNode;
 %type <node> decl_local
 %type <node> decl_var
 %type <node> decl_vetor
-%type <typeNode> tipo_var
+%type <dataType> tipo_var
 %type <node> def_funcao
 %type <node> chamada_funcao
 %type <node> cabecalho
@@ -97,7 +95,7 @@ class TypeNode;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; $$->printSourceCode(); }
+s : programa { $$ = $1; $$->print(); $$->printSourceCode(); }
   ;
 
 programa: programa decl_global { $1->addChild($2); }
@@ -113,17 +111,17 @@ decl_local: decl_local decl_var ';' { }
 	| decl_var ';' { $$ = $1; }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($3->getType()); }
+decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($3); }
   ;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($3->getType(), atoi($5->getText().c_str())); }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($3, atoi($5->getText().c_str())); }
 	;
 
-tipo_var: TK_PR_INTEIRO { $$ = new TypeNode(Common::INT); }
-		| TK_PR_FLUTUANTE { $$ = new TypeNode(Common::FLOAT); }
-		| TK_PR_BOOLEANO { $$ = new TypeNode(Common::BOOL); }
-		| TK_PR_CARACTERE { $$ = new TypeNode(Common::CHAR); }
-		| TK_PR_CADEIA { $$ = new TypeNode(Common::STRING); }
+tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
+		| TK_PR_FLUTUANTE { $$ = Common::FLOAT; }
+		| TK_PR_BOOLEANO { $$ = Common::BOOL; }
+		| TK_PR_CARACTERE { $$ = Common::CHAR; }
+		| TK_PR_CADEIA { $$ = Common::STRING; }
         ;
 
 def_funcao: cabecalho decl_local bloco_comando { $$ = new Node(); }

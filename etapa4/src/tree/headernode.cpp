@@ -2,7 +2,7 @@
 #include <iostream>
 
 HeaderNode::HeaderNode(std::string functionName, Common::DataType dataType, std::list<Node *> *children):
-    name("Cabeçalho"), functionName(functionName), dataType(dataType) {
+    name("Cabecalho"), functionName(functionName), dataType(dataType) {
     this->children = children;
 }
 

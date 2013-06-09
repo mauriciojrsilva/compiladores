@@ -7,12 +7,12 @@
 class DefineFunctionNode : public Node {
 
 public:
-    DefineFunctionNode();
-    void printSourceCode();
-    void print();
+	DefineFunctionNode();
+	void printSourceCode();
+	void print();
 
 private:
-    std::string name;
+	std::string name;
 };
 
 #endif // DEFINEFUNCTIONNODE_H

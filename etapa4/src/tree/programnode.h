@@ -8,12 +8,12 @@
 class ProgramNode : public Node {
 
 public:
-    ProgramNode();
-    void printSourceCode();
-    void print();
+	ProgramNode();
+	void printSourceCode();
+	void print();
 
 private:
-    std::string name;
+	std::string name;
 };
 
 #endif // PROGRAMNODE_H

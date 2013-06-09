@@ -1,9 +1,11 @@
 #include "node.h"
 
-Node::Node() {}
+Node::Node() {
+    this->children = new std::list<Node*>();
+}
 
 void Node::addChild(Node* child) {
-    this->children.push_back(child);
+    this->children->push_back(child);
 }
 
 void Node::printSourceCode() {

@@ -1,14 +1,20 @@
 %{
 #include <stdio.h>
+#include <list>
 #include "../tree/common.h"
 #include "../symbol.h"
 #include "../tree/node.h"
 #include "../tree/programnode.h"
 #include "../tree/declarevarnode.h"
 #include "../tree/declarevectornode.h"
+#include "../tree/headernode.h"
+#include "../tree/definefunctionnode.h"
 
 int yylex();
 void yyerror(const char *message);
+
+typedef std::list<Node*> ParameterList;
+typedef std::list<Node*> VariableList;
 
 %}
 
@@ -17,6 +23,7 @@ void yyerror(const char *message);
 
 %union {
   Node* node;
+  std::list<Node*>* nodes;
   Common::DataType dataType;
   Symbol* symbol;
 }
@@ -67,15 +74,15 @@ void yyerror(const char *message);
 %type <node> s
 %type <node> programa
 %type <node> decl_global
-%type <node> decl_local
+%type <nodes> decl_local
 %type <node> decl_var
 %type <node> decl_vetor
 %type <dataType> tipo_var
 %type <node> def_funcao
 %type <node> chamada_funcao
 %type <node> cabecalho
-%type <node> lista_parametros
-%type <node> lista_parametros_nao_vazia
+%type <nodes> lista_parametros
+%type <nodes> lista_parametros_nao_vazia
 %type <node> parametro
 %type <node> comando
 %type <node> bloco_comando
@@ -99,7 +106,7 @@ s : programa { $$ = $1; $$->print(); $$->printSourceCode(); }
   ;
 
 programa: programa decl_global { $1->addChild($2); }
-  | programa def_funcao { }
+  | programa def_funcao { $1->addChild($2); }
   | { $$ = new ProgramNode(); }
   ;
 
@@ -107,14 +114,14 @@ decl_global: decl_var ';' { $$ = $1; }
   | decl_vetor ';' { $$ = $1; }
   ;
 
-decl_local: decl_local decl_var ';' { }
-	| decl_var ';' { $$ = $1; }
+decl_local: decl_local decl_var ';' { $$->push_back($2); }
+	| decl_var ';' { $$ = new VariableList(); $$->push_back($1); }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($3); }
+decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($1->getText(), $3); }
   ;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($3, atoi($5->getText().c_str())); }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($1->getText(), $3, atoi($5->getText().c_str())); }
 	;
 
 tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
@@ -124,23 +131,23 @@ tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
 		| TK_PR_CADEIA { $$ = Common::STRING; }
         ;
 
-def_funcao: cabecalho decl_local bloco_comando { $$ = new Node(); }
-  | cabecalho bloco_comando { $$ = new Node(); }
+def_funcao: cabecalho decl_local bloco_comando { $$ = new DefineFunctionNode(); }
+  | cabecalho bloco_comando { $$ = new DefineFunctionNode(); }
   ;
   
 chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = new Node(); }
-
+  ;
 
 /* Function header - begin */
-cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')' { $$ = new Node(); }
+cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')' { $$ = new HeaderNode($1->getText(), $3, $5); }
   ;
 	
 lista_parametros: lista_parametros_nao_vazia { $$ = $1; }
-  | { $$ = new Node(); }
+  | { /* TODO: check if something needs to be put here */ }
   ;
 
-lista_parametros_nao_vazia: lista_parametros_nao_vazia ',' parametro { }
-  | parametro { $$ = new Node(); }
+lista_parametros_nao_vazia: lista_parametros_nao_vazia ',' parametro { $1->push_back($3); }
+  | parametro { $$ = new ParameterList(); $$->push_back($1); }
   ;
 
 parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = new Node(); }

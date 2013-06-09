@@ -1,7 +1,8 @@
 #include "declarevectornode.h"
 #include <iostream>
 
-DeclareVectorNode::DeclareVectorNode(Common::DataType dataType, int size): dataType(dataType), name("Declaracao de vetor") {}
+DeclareVectorNode::DeclareVectorNode(std::string vectorName, Common::DataType dataType, int size):
+    name("Declaracao de vetor"), vectorName(vectorName), dataType(dataType), size(size) {}
 
 void DeclareVectorNode::printSourceCode() {
 

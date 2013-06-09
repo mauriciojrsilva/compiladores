@@ -1,7 +1,8 @@
 #include "declarevarnode.h"
 #include <iostream>
 
-DeclareVarNode::DeclareVarNode(Common::DataType dataType): dataType(dataType), name("Declaracao de variavel") {}
+DeclareVarNode::DeclareVarNode(std::string varName, Common::DataType dataType):
+    name("Declaracao de variavel"), varName(varName), dataType(dataType) {}
 
 void DeclareVarNode::printSourceCode() {
 

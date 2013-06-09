@@ -9,6 +9,6 @@ void ProgramNode::printSourceCode() {
 
 void ProgramNode::print() {
     std::cout << this->name << "\n";
-    for (std::list<Node*>::iterator it = children.begin(); it != children.end(); it++)
+    for (std::list<Node*>::iterator it = children->begin(); it != children->end(); it++)
         (*it)->print();
 }

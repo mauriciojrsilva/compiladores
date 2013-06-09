@@ -8,13 +8,14 @@
 class DeclareVarNode : public Node {
 
 public:
-    DeclareVarNode(Common::DataType dataType);
+    DeclareVarNode(std::string varName, Common::DataType dataType);
     void printSourceCode();
-    void print();
+    void print();    
 
 private:
-    Common::DataType dataType;
     std::string name;
+    std::string varName;
+    Common::DataType dataType;
 };
 
 #endif // DECLAREVARNODE_H

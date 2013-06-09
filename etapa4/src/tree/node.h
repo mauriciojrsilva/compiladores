@@ -14,7 +14,7 @@ public:
     virtual void print(); // = 0;
 
 protected:
-    std::list<Node*> children;
+    std::list<Node*>* children;
     //Symbol* symbol;
 };
 

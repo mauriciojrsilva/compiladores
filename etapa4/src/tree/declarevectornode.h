@@ -8,13 +8,15 @@
 class DeclareVectorNode : public Node {
 
 public:
-    DeclareVectorNode(Common::DataType dataType, int size);
+    DeclareVectorNode(std::string vectorName, Common::DataType dataType, int size);
     void printSourceCode();
     void print();
 
 private:
-    Common::DataType dataType;
     std::string name;
+    std::string vectorName;
+    Common::DataType dataType;
+    int size;
 };
 
 #endif // DECLAREVECTORNODE_H

@@ -24,5 +24,7 @@ ${BASE_SOURCE_DIR}/symbol.cpp
 ${BASE_SOURCE_DIR}/tree/node.cpp
 ${BASE_SOURCE_DIR}/tree/programnode.cpp
 ${BASE_SOURCE_DIR}/tree/declarevarnode.cpp
-${BASE_SOURCE_DIR}/tree/declarevectornode.cpp)
+${BASE_SOURCE_DIR}/tree/declarevectornode.cpp
+${BASE_SOURCE_DIR}/tree/headernode.cpp
+${BASE_SOURCE_DIR}/tree/definefunctionnode.cpp)
 TARGET_LINK_LIBRARIES(main ${FLEX_LIBRARIES})

@@ -7,7 +7,7 @@ class ReturnNode : public Node {
 
 public:
   ReturnNode(Node* expression);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 };
 
 #endif // RETURNNODE_H

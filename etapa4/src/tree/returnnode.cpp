@@ -4,4 +4,4 @@ ReturnNode::ReturnNode(Node* expression): Node("Retorna") {
   this->addChild(expression);
 }
 
-void ReturnNode::printSourceCode() {}
+void ReturnNode::printSourceCode(const std::string& end) {}

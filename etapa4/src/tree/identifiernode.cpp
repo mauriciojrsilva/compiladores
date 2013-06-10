@@ -1,4 +1,5 @@
 #include "identifiernode.h"
+#include <stdio.h>
 
 IdentifierNode::IdentifierNode(Symbol* symbol):
   ExpressionNode("Expressao idenficador"), symbol(symbol) {
@@ -10,6 +11,6 @@ IdentifierNode::IdentifierNode(Symbol* symbol, Node* expression):
   // TODO check the data type
 }
 
-void IdentifierNode::printSourceCode() {
-  // TODO
+void IdentifierNode::printSourceCode(const std::string& end) {
+  fprintf(this->flexOut, "%s", symbol->getText().c_str());
 }

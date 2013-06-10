@@ -5,7 +5,7 @@
 VectorDeclarationNode::VectorDeclarationNode(const std::string &vectorName, Common::DataType dataType, int size):
   Node("Declaracao de vetor"), vectorName(vectorName), dataType(dataType), size(size) {}
 
-void VectorDeclarationNode::printSourceCode() {
+void VectorDeclarationNode::printSourceCode(const std::string& end) {
   std::stringstream sizeStr;
   sizeStr << this->size;
 
@@ -15,5 +15,5 @@ void VectorDeclarationNode::printSourceCode() {
   fprintf(this->flexOut, "%s", "[");
   fprintf(this->flexOut, "%s", sizeStr.str().c_str());
   fprintf(this->flexOut, "%s", "]");
-  fprintf(this->flexOut, "%s", ";\n");
+  fprintf(this->flexOut, "%s", end.c_str());
 }

@@ -5,4 +5,4 @@ WhileNode::WhileNode(Node *expression, Node *command): Node("Enquanto") {
   this->addChild(command);
 }
 
-void WhileNode::printSourceCode() {}
+void WhileNode::printSourceCode(const std::string& end) {}

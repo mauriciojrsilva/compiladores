@@ -7,7 +7,7 @@ class WhileNode : public Node {
 
 public:
   WhileNode(Node* expression, Node* command);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 };
 
 #endif // WHILENODE_H

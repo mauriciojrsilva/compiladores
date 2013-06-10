@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <list>
+#include <vector>
 #include <string>
 #include "common.h"
 //#include "symbol.h"
@@ -12,16 +12,16 @@ class Node {
 public:
 	Node();
   Node(const std::string& name);
-  Node(const std::string& name, std::list<Node*>* children);
+  Node(const std::string& name, std::vector<Node*>* children);
 	void addChild(Node* child);
-	void addChildren(std::list<Node*>* children);
+  void addChildren(std::vector<Node*>* children);
   void print(int level);
-  virtual void printSourceCode() = 0;
+  virtual void printSourceCode(const std::string& end) = 0;
 
 protected:  
   std::string dataTypeToString(const Common::DataType& dataType);
   std::string name;
-	std::list<Node*>* children;
+  std::vector<Node*>* children;
   FILE* flexOut;
 	//Symbol* symbol;
 

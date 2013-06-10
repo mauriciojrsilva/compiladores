@@ -9,7 +9,7 @@ class VectorDeclarationNode : public Node {
 
 public:
   VectorDeclarationNode(const std::string& vectorName, Common::DataType dataType, int size);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
 	std::string vectorName;

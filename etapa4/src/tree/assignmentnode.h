@@ -9,7 +9,7 @@ class AssignmentNode : public Node {
 public:
   AssignmentNode(const std::string& varName, Node* expressionAssigned);
   AssignmentNode(const std::string& varName, Node* expressionIndex, Node* expressionAssigned);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
   std::string varName;

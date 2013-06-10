@@ -8,7 +8,7 @@ class InputNode : public Node {
 
 public:
   InputNode(const std::string& varName);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
   std::string varName;

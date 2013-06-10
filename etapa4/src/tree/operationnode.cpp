@@ -6,6 +6,6 @@ OperationNode::OperationNode(const Common::OperationType& operationType, Node* l
   this->addChild(rightSide);
 }
 
-void OperationNode::printSourceCode() {
+void OperationNode::printSourceCode(const std::string& end) {
   // TODO
 }

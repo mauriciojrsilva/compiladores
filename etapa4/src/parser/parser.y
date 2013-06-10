@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include <list>
+#include <vector>
 #include "../tree/common.h"
 #include "../symbol.h"
 #include "../tree/node.h"
@@ -25,10 +25,10 @@
 int yylex();
 void yyerror(const char *message);
 
-typedef std::list<Node*> ParameterList;
-typedef std::list<Node*> VariableList;
-typedef std::list<Node*> ExpressionList;
-typedef std::list<Node*> CommandList;
+typedef std::vector<Node*> ParameterList;
+typedef std::vector<Node*> VariableList;
+typedef std::vector<Node*> ExpressionList;
+typedef std::vector<Node*> CommandList;
 
 %}
 
@@ -37,7 +37,7 @@ typedef std::list<Node*> CommandList;
 
 %union {
   Node* node;
-  std::list<Node*>* nodes;
+  std::vector<Node*>* nodes;
   Common::DataType dataType;
   Symbol* symbol;
 }
@@ -116,7 +116,7 @@ typedef std::list<Node*> CommandList;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; $$->print(0); $$->printSourceCode(); }
+s : programa { $$ = $1; $$->print(0); $$->printSourceCode(""); }
 	;
 
 programa: programa decl_global { $1->addChild($2); }
@@ -157,7 +157,7 @@ cabecalho: TK_IDENTIFICADOR ':' tipo_var '(' lista_parametros ')' { $$ = new Hea
 	;
 	
 lista_parametros: lista_parametros_nao_vazia { $$ = $1; }
-	| { /* TODO: check if something needs to be put in here */ }
+	| { $$ = new ParameterList(); }
 	;
 
 lista_parametros_nao_vazia: lista_parametros_nao_vazia ',' parametro { $1->push_back($3); }
@@ -203,7 +203,7 @@ retorna: TK_PR_RETORNA expressao ';' { $$ = new ReturnNode($2); }
 	;
 
 lista_expressoes: lista_expressoes_nao_vazia { $$ = $1; }
-	| { /* TODO: check if something needs to be put in here */}
+	| { $$ = new ExpressionList(); }
 	;
 
 lista_expressoes_nao_vazia: lista_expressoes_nao_vazia ',' expressao { $1->push_back($3); }

@@ -7,8 +7,8 @@
 class OutputNode : public Node {
 
 public:
-  OutputNode(std::list<Node*>* children);
-  void printSourceCode();
+  OutputNode(std::vector<Node*>* children);
+  void printSourceCode(const std::string& end);
 };
 
 #endif // OUTPUTNODE_H

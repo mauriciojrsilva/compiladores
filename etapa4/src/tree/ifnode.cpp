@@ -11,4 +11,4 @@ IfNode::IfNode(Node* expression, Node* commandThen, Node* commandElse): Node("Se
   this->addChild(commandElse);
 }
 
-void IfNode::printSourceCode() {}
+void IfNode::printSourceCode(const std::string& end) {}

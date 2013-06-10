@@ -12,7 +12,7 @@ public:
   ExpressionNode();
   ExpressionNode(const std::string& name);
   ExpressionNode(const std::string& name, const Common::DataType& dataType);
-  virtual void printSourceCode() = 0;
+  virtual void printSourceCode(const std::string& end) = 0;
 
 protected:
   Common::DataType dataType;

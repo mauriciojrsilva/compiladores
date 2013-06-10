@@ -8,7 +8,7 @@ class IfNode : public Node {
 public:
   IfNode(Node* expression, Node* commandThen);
   IfNode(Node* expression, Node* commandThen, Node* commandElse);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 };
 
 #endif // IFNODE_H

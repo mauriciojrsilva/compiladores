@@ -8,7 +8,7 @@ class FunctionDefinitionNode : public Node {
 
 public:
   FunctionDefinitionNode();
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 };
 
 #endif // FUNCTIONDEFINITIONNODE_H

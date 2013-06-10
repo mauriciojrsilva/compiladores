@@ -9,7 +9,7 @@ class VarDeclarationNode : public Node {
 
 public:
   VarDeclarationNode(const std::string& varName, Common::DataType dataType);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
 	std::string varName;

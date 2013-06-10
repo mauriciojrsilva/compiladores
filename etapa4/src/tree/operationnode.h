@@ -8,7 +8,7 @@ class OperationNode : public ExpressionNode {
 
 public:
   OperationNode(const Common::OperationType& operationType, Node* leftSide, Node* rightSide);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
   Common::OperationType operationType;

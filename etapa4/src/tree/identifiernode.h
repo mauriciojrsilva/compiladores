@@ -10,7 +10,7 @@ class IdentifierNode : public ExpressionNode {
 public:
   IdentifierNode(Symbol* symbol);
   IdentifierNode(Symbol* symbol, Node* expression);
-  void printSourceCode();
+  void printSourceCode(const std::string& end);
 
 private:
   Symbol* symbol;

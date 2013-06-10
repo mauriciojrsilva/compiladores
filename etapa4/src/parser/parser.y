@@ -5,16 +5,30 @@
 #include "../symbol.h"
 #include "../tree/node.h"
 #include "../tree/programnode.h"
-#include "../tree/declarevarnode.h"
-#include "../tree/declarevectornode.h"
+#include "../tree/vardeclarationnode.h"
+#include "../tree/vectordeclarationnode.h"
 #include "../tree/headernode.h"
-#include "../tree/definefunctionnode.h"
+#include "../tree/functiondefinitionnode.h"
+#include "../tree/assignmentnode.h"
+#include "../tree/inputnode.h"
+#include "../tree/outputnode.h"
+#include "../tree/returnnode.h"
+#include "../tree/functioncallnode.h"
+#include "../tree/ifnode.h"
+#include "../tree/whilenode.h"
+#include "../tree/blocknode.h"
+#include "../tree/expressionnode.h"
+#include "../tree/identifiernode.h"
+#include "../tree/literalnode.h"
+#include "../tree/operationnode.h"
 
 int yylex();
 void yyerror(const char *message);
 
 typedef std::list<Node*> ParameterList;
 typedef std::list<Node*> VariableList;
+typedef std::list<Node*> ExpressionList;
+typedef std::list<Node*> CommandList;
 
 %}
 
@@ -86,15 +100,15 @@ typedef std::list<Node*> VariableList;
 %type <node> parametro
 %type <node> comando
 %type <node> bloco_comando
-%type <node> seq_comando
+%type <nodes> seq_comando
 %type <node> atribuicao
 %type <node> entrada
 %type <node> saida
-%type <node> lista_expressoes_nao_vazia
+%type <nodes> lista_expressoes
+%type <nodes> lista_expressoes_nao_vazia
+%type <node> expressao
 %type <node> retorna
 %type <node> controle_fluxo
-%type <node> expressao
-%type <node> lista_expressoes
 
 %start s
 
@@ -102,7 +116,7 @@ typedef std::list<Node*> VariableList;
 /* Regras (e ações) da gramática da Linguagem K */
 
 // criada a regra s para conseguir chamar a impressão da árvore
-s : programa { $$ = $1; $$->print(); $$->printSourceCode(); }
+s : programa { $$ = $1; $$->print(0); $$->printSourceCode(); }
 	;
 
 programa: programa decl_global { $1->addChild($2); }
@@ -118,10 +132,10 @@ decl_local: decl_local decl_var ';' { $$->push_back($2); }
 	| decl_var ';' { $$ = new VariableList(); $$->push_back($1); }
 	;
   
-decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($1->getText(), $3); }
+decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new VarDeclarationNode($1->getText(), $3); }
 	;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new DeclareVectorNode($1->getText(), $3, atoi($5->getText().c_str())); }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new VectorDeclarationNode($1->getText(), $3, atoi($5->getText().c_str())); }
 	;
 
 tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
@@ -131,11 +145,11 @@ tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
 	| TK_PR_CADEIA { $$ = Common::STRING; }
 	;
 
-def_funcao: cabecalho decl_local bloco_comando { $$ = new DefineFunctionNode(); $$->addChild($1); $$->addChildren($2); $$->addChild($3); delete $2; }
-	| cabecalho bloco_comando { $$ = new DefineFunctionNode(); $$->addChild($1); $$->addChild($2); }
+def_funcao: cabecalho decl_local bloco_comando { $$ = new FunctionDefinitionNode(); $$->addChild($1); $$->addChildren($2); $$->addChild($3); delete $2; }
+	| cabecalho bloco_comando { $$ = new FunctionDefinitionNode(); $$->addChild($1); $$->addChild($2); }
 	;
   
-chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = new Node(); }
+chamada_funcao: TK_IDENTIFICADOR '(' lista_expressoes ')' { $$ = new FunctionCallNode($1->getText(), $3); }
 	;
 
 /* Function header - begin */
@@ -150,7 +164,7 @@ lista_parametros_nao_vazia: lista_parametros_nao_vazia ',' parametro { $1->push_
 	| parametro { $$ = new ParameterList(); $$->push_back($1); }
 	;
 
-parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = new DeclareVarNode($1->getText(), $3); }
+parametro: TK_IDENTIFICADOR ':' tipo_var { $$ = new VarDeclarationNode($1->getText(), $3); }
 	;
 /* Function header - end */
 
@@ -167,63 +181,63 @@ comando: bloco_comando { $$ = $1; }
 	| chamada_funcao ';' { $$ = $1; }
 	;
 
-bloco_comando: '{' seq_comando '}' { $$ = new Node(); }
+bloco_comando: '{' seq_comando '}' { $$ = new BlockNode($2); }
 	;
   
-seq_comando: seq_comando comando { }
-	| seq_comando comando ';' { }
-	| { $$ = new Node(); }
+seq_comando: seq_comando comando { $1->push_back($2); }
+	| seq_comando comando ';' { $1->push_back($2); }
+	| { $$ = new CommandList(); }
 	;
 
-atribuicao: TK_IDENTIFICADOR '=' expressao ';' { $$ = new Node(); }
-	| TK_IDENTIFICADOR '[' expressao ']' '=' expressao ';' { $$ = new Node(); }
+atribuicao: TK_IDENTIFICADOR '=' expressao ';' { $$ = new AssignmentNode($1->getText(), $3); }
+	| TK_IDENTIFICADOR '[' expressao ']' '=' expressao ';' { $$ = new AssignmentNode($1->getText(), $3, $6); }
 	;
 
-entrada: TK_PR_ENTRADA TK_IDENTIFICADOR ';' { $$ = new Node(); }
+entrada: TK_PR_ENTRADA TK_IDENTIFICADOR ';' { $$ = new InputNode($2->getText()); }
 	;
 
-saida: TK_PR_SAIDA lista_expressoes_nao_vazia ';' { $$ = new Node(); }
+saida: TK_PR_SAIDA lista_expressoes_nao_vazia ';' { $$ = new OutputNode($2); }
+	;
+
+retorna: TK_PR_RETORNA expressao ';' { $$ = new ReturnNode($2); }
 	;
 
 lista_expressoes: lista_expressoes_nao_vazia { $$ = $1; }
-	| { $$ = new Node(); }
+	| { /* TODO: check if something needs to be put in here */}
 	;
 
-lista_expressoes_nao_vazia: lista_expressoes_nao_vazia ',' expressao { }
-	| expressao { $$ = new Node(); }
-	;
-
-retorna: TK_PR_RETORNA expressao ';' { $$ = new Node(); }
+lista_expressoes_nao_vazia: lista_expressoes_nao_vazia ',' expressao { $1->push_back($3); }
+	| expressao { $$ = new ExpressionList(); $$->push_back($1); }
 	;
   
-controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando { $$ = new Node(); }
-	| TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando TK_PR_SENAO comando { $$ = new Node(); }
-	| TK_PR_ENQUANTO '(' expressao ')' comando { $$ = new Node(); }
+controle_fluxo: TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando { $$ = new IfNode($3, $6); }
+	| TK_PR_SE '(' expressao ')' TK_PR_ENTAO comando TK_PR_SENAO comando { $$ = new IfNode($3, $6, $8); }
+	| TK_PR_ENQUANTO '(' expressao ')' comando { $$ = new WhileNode($3, $5); }
 	;
 
-expressao: TK_IDENTIFICADOR { $$ = new Node(); }
-	| TK_IDENTIFICADOR '[' expressao ']' { $$ = new Node(); }
-	| TK_LIT_INTEIRO { $$ = new Node(); }
-	| TK_LIT_FLUTUANTE { $$ = new Node(); }
-	| TK_LIT_FALSO { $$ = new Node(); }
-	| TK_LIT_VERDADEIRO { $$ = new Node(); }
-	| TK_LIT_CARACTERE { $$ = new Node(); }
-	| TK_LIT_CADEIA { $$ = new Node(); }
-	| expressao '+' expressao { $$ = new Node(); }
-	| expressao '-' expressao { $$ = new Node(); }
-	| expressao '*' expressao { $$ = new Node(); }
-	| expressao '/' expressao { $$ = new Node(); }
-	| expressao '<' expressao { $$ = new Node(); }
-	| expressao '>' expressao { $$ = new Node(); }
-	| '+' expressao { $$ = new Node(); }
-	| '-' expressao { $$ = new Node(); }
+expressao: TK_IDENTIFICADOR { $$ = new IdentifierNode($1); }
+	| TK_IDENTIFICADOR '[' expressao ']' { $$ = new IdentifierNode($1, $3); }
+	| TK_LIT_INTEIRO { $$ = new LiteralNode($1->getText(), Common::INT); }
+	| TK_LIT_FLUTUANTE { $$ = new LiteralNode($1->getText(), Common::FLOAT); }
+	| TK_LIT_FALSO { $$ = new LiteralNode($1->getText(), Common::BOOL); }
+	| TK_LIT_VERDADEIRO { $$ = new LiteralNode($1->getText(), Common::BOOL); }
+	| TK_LIT_CARACTERE { $$ = new LiteralNode($1->getText(), Common::CHAR); }
+	| TK_LIT_CADEIA { $$ = new LiteralNode($1->getText(), Common::STRING); }
+	| expressao '+' expressao { $$ = new OperationNode(Common::OP_SUM, $1, $3); }
+	| expressao '-' expressao { $$ = new OperationNode(Common::OP_SUB, $1, $3); }
+	| expressao '*' expressao { $$ = new OperationNode(Common::OP_MULT, $1, $3); }
+	| expressao '/' expressao { $$ = new OperationNode(Common::OP_DIV, $1, $3); }
+	| expressao '<' expressao { $$ = new OperationNode(Common::OP_LESS, $1, $3); }
+	| expressao '>' expressao { $$ = new OperationNode(Common::OP_GREATER, $1, $3); }
+	| '+' expressao { $$ = $2; }
+	| '-' expressao { $$ = new OperationNode(Common::OP_SUB, NULL, $2);; }
 	| '(' expressao ')' { $$ = $2; }
-	| expressao TK_OC_LE expressao { $$ = new Node(); }
-	| expressao TK_OC_GE expressao { $$ = new Node(); }
-	| expressao TK_OC_EQ expressao { $$ = new Node(); }
-	| expressao TK_OC_NE expressao { $$ = new Node(); }
-	| expressao TK_OC_AND expressao { $$ = new Node(); }
-	| expressao TK_OC_OR expressao { $$ = new Node(); }
+	| expressao TK_OC_LE expressao { $$ = new OperationNode(Common::OP_LE, $1, $3); }
+	| expressao TK_OC_GE expressao { $$ = new OperationNode(Common::OP_GE, $1, $3); }
+	| expressao TK_OC_EQ expressao { $$ = new OperationNode(Common::OP_EQUAL, $1, $3); }
+	| expressao TK_OC_NE expressao { $$ = new OperationNode(Common::OP_NEQUAL, $1, $3); }
+	| expressao TK_OC_AND expressao { $$ = new OperationNode(Common::OP_AND, $1, $3); }
+	| expressao TK_OC_OR expressao { $$ = new OperationNode(Common::OP_OR, $1, $3); }
 	| chamada_funcao { $$ = $1; }
 	;
 

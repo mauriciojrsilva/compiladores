@@ -9,11 +9,7 @@ class ProgramNode : public Node {
 
 public:
 	ProgramNode();
-	void printSourceCode();
-	void print();
-
-private:
-	std::string name;
+  void printSourceCode();
 };
 
 #endif // PROGRAMNODE_H

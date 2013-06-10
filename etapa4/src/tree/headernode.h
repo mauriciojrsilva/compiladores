@@ -7,12 +7,10 @@
 
 class HeaderNode : public Node {
 public:
-	HeaderNode(std::string functionName, Common::DataType dataType, std::list<Node*>* children);
-	void printSourceCode();
-	void print();
+  HeaderNode(const std::string& functionName, Common::DataType dataType, std::list<Node*>* children);
+  void printSourceCode();
 
 private:
-	std::string name;
 	std::string functionName;
 	Common::DataType dataType;
 };

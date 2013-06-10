@@ -1,16 +1,10 @@
 #include "headernode.h"
 #include <iostream>
 
-HeaderNode::HeaderNode(std::string functionName, Common::DataType dataType, std::list<Node *> *children):
-    name("Cabecalho"), functionName(functionName), dataType(dataType) {
-    this->children = children;
-}
+HeaderNode::HeaderNode(const std::string &functionName, Common::DataType dataType, std::list<Node *> *children):
+  Node("Cabecalho", children), functionName(functionName), dataType(dataType) {}
 
 
 void HeaderNode::printSourceCode() {
-
-}
-
-void HeaderNode::print() {
-    std::cout << this->name << "\n";
+  // TODO
 }

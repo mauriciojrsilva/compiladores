@@ -5,7 +5,7 @@ sudo make
 sudo rm input/saida*
 sudo rm input/final*
 
-if [ $# == 1 ]; then
+if [ $# = 1 ]; then
 
 sudo ./main input/certo$1.txt input/saida$1.txt
 #./main input/saida$1.txt input/final$1.txt
@@ -31,7 +31,7 @@ sudo ./main input/certo03.txt input/saida03.txt
 sudo ./main input/saida03.txt input/final03.txt
 
 echo "======test04======"
-sudo ./main inputex/certo04.txt input/saida04.txt
+sudo ./main input/certo04.txt input/saida04.txt
 sudo ./main input/saida04.txt input/final04.txt
 
 echo "======test05======"

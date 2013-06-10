@@ -1,13 +1,13 @@
 clear
-rm main
-cmake CMakeLists.txt
-make
-rm input/saida*
-rm input/final*
+sudo rm main
+sudo cmake CMakeLists.txt
+sudo make
+sudo rm input/saida*
+sudo rm input/final*
 
 if [ $# == 1 ]; then
 
-./main input/certo$1.txt input/saida$1.txt
+sudo ./main input/certo$1.txt input/saida$1.txt
 #./main input/saida$1.txt input/final$1.txt
 
 #echo "======Diff======"
@@ -19,84 +19,84 @@ if [ $# == 1 ]; then
 else
 
 echo "======test01======"
-./main input/certo01.txt input/saida01.txt
-./main input/saida01.txt input/final01.txt
+sudo ./main input/certo01.txt input/saida01.txt
+sudo ./main input/saida01.txt input/final01.txt
 
 echo "======test02======"
-./main input/certo02.txt input/saida02.txt
-./main input/saida02.txt input/final02.txt
+sudo ./main input/certo02.txt input/saida02.txt
+sudo ./main input/saida02.txt input/final02.txt
 
 echo "======test03======"
-./main input/certo03.txt input/saida03.txt
-./main input/saida03.txt input/final03.txt
+sudo ./main input/certo03.txt input/saida03.txt
+sudo ./main input/saida03.txt input/final03.txt
 
 echo "======test04======"
-./main inputex/certo04.txt input/saida04.txt
-./main input/saida04.txt input/final04.txt
+sudo ./main inputex/certo04.txt input/saida04.txt
+sudo ./main input/saida04.txt input/final04.txt
 
 echo "======test05======"
-./main input/certo05.txt input/saida05.txt
-./main input/saida05.txt input/final05.txt
+sudo ./main input/certo05.txt input/saida05.txt
+sudo ./main input/saida05.txt input/final05.txt
 
 echo "======test06======"
-./main input/certo06.txt input/saida06.txt
-./main input/saida06.txt input/final06.txt
+sudo ./main input/certo06.txt input/saida06.txt
+sudo ./main input/saida06.txt input/final06.txt
 
 echo "======test07======"
-./main input/certo07.txt input/saida07.txt
-./main input/saida07.txt input/final07.txt
+sudo ./main input/certo07.txt input/saida07.txt
+sudo ./main input/saida07.txt input/final07.txt
 
 echo "======test08======"
-./main input/certo08.txt input/saida08.txt
-./main input/saida08.txt input/final08.txt
+sudo ./main input/certo08.txt input/saida08.txt
+sudo ./main input/saida08.txt input/final08.txt
 
 echo "======test09======"
-./main input/certo09.txt input/saida09.txt
-./main input/saida09.txt input/final09.txt
+sudo ./main input/certo09.txt input/saida09.txt
+sudo ./main input/saida09.txt input/final09.txt
 
 echo "======test10======"
-./main input/certo10.txt input/saida10.txt
-./main input/saida10.txt input/final10.txt
+sudo ./main input/certo10.txt input/saida10.txt
+sudo ./main input/saida10.txt input/final10.txt
 
 echo "======test11======"
-./main input/certo11.txt input/saida11.txt
-./main input/saida11.txt input/final11.txt
+sudo ./main input/certo11.txt input/saida11.txt
+sudo ./main input/saida11.txt input/final11.txt
 
 echo "======test12======"
-./main input/certo12.txt input/saida12.txt
-./main input/saida12.txt input/final12.txt
+sudo ./main input/certo12.txt input/saida12.txt
+sudo ./main input/saida12.txt input/final12.txt
 
 echo "======test13======"
-./main input/certo13.txt input/saida13.txt
-./main input/saida13.txt input/final13.txt
+sudo ./main input/certo13.txt input/saida13.txt
+sudo ./main input/saida13.txt input/final13.txt
 
 echo "======test14======"
-./main input/certo14.txt input/saida14.txt
-./main input/saida14.txt input/final14.txt
+sudo ./main input/certo14.txt input/saida14.txt
+sudo ./main input/saida14.txt input/final14.txt
 
 echo "======test15======"
-./main input/certo15.txt input/saida15.txt
-./main input/saida15.txt input/final15.txt
+sudo ./main input/certo15.txt input/saida15.txt
+sudo ./main input/saida15.txt input/final15.txt
 
 echo "======test16======"
-./main input/certo16.txt input/saida16.txt
-./main input/saida16.txt input/final16.txt
+sudo ./main input/certo16.txt input/saida16.txt
+sudo ./main input/saida16.txt input/final16.txt
 
 echo "======test17======"
-./main input/certo17.txt input/saida17.txt
-./main input/saida17.txt input/final17.txt
+sudo ./main input/certo17.txt input/saida17.txt
+sudo ./main input/saida17.txt input/final17.txt
 
 echo "======test18======"
-./main input/certo18.txt input/saida18.txt
-./main input/saida18.txt input/final18.txt
+sudo ./main input/certo18.txt input/saida18.txt
+sudo ./main input/saida18.txt input/final18.txt
 
 echo "======test19======"
-./main input/certo19.txt input/saida19.txt
-./main input/saida19.txt input/final19.txt
+sudo ./main input/certo19.txt input/saida19.txt
+sudo ./main input/saida19.txt input/final19.txt
 
 echo "======test20======"
-./main input/certo20.txt input/saida20.txt
-./main input/saida20.txt input/final20.txt
+sudo ./main input/certo20.txt input/saida20.txt
+sudo ./main input/saida20.txt input/final20.txt
 
 echo "======Diffs======"
 echo "\n1\n"

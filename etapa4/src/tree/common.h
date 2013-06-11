@@ -39,7 +39,8 @@ typedef enum OperationType {
   OP_EQUAL,
   OP_NEQUAL,
   OP_AND,
-  OP_OR
+	OP_OR,
+	OP_PAREN
 } OperationType;
 
 }

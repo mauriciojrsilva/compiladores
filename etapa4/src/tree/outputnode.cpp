@@ -5,7 +5,10 @@ OutputNode::OutputNode(std::vector<Node*>* children): Node("Saida", children) {}
 
 void OutputNode::printSourceCode(const std::string& end) {
 	fprintf(this->flexOut, "%s", "saida ");
-	for (std::vector<Node*>::iterator it = this->children->begin(); it != this->children->end(); it++)
-		(*it)->printSourceCode(",");
+	for (unsigned int i = 0; i < this->children->size(); i++) {
+		this->children->at(i)->printSourceCode("");
+		if (i != this->children->size()-1)
+			fprintf(this->flexOut, "%s", ", ");
+	}
 	fprintf(this->flexOut, "%s", ";\n");
 }

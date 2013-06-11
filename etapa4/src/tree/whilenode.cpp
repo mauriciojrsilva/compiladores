@@ -10,5 +10,5 @@ void WhileNode::printSourceCode(const std::string& end) {
 	fprintf(this->flexOut, "%s", "enquanto (");
 	this->children->at(0)->printSourceCode("");
 	fprintf(this->flexOut, "%s", ")\n");
-	this->children->at(1)->printSourceCode("");
+	this->children->at(1)->printSourceCode(";\n");
 }

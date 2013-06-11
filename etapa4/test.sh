@@ -10,11 +10,12 @@ if [ $# = 1 ]; then
 sudo ./main input/certo$1.txt input/saida$1.txt
 #./main input/saida$1.txt input/final$1.txt
 
-#echo "======Diff======"
-#echo ""
-#sdiff input/certo$1.txt input/saida$1.txt
+echo "======Diff======"
+echo ""
+sdiff input/certo$1.txt input/saida$1.txt
 #sdiff input/saida$1.txt input/final$1.txt
-#echo ""
+echo ""
+echo ""
 
 else
 

@@ -9,15 +9,15 @@ void FunctionDefinitionNode::printSourceCode(const std::string& end) {
   if (this->children->size() == 2) {
     Node* block = this->children->at(1);
     fprintf(this->flexOut, "%s", " ");
-    block->printSourceCode("");
+		block->printSourceCode("\n");
   } else if (this->children->size() > 2) {
     Node* block = this->children->at(this->children->size()-1);
     int childrenSize = this->children->size() - 2 + 1;
 
     fprintf(this->flexOut, "%s", "\n");
     for (int i = 1; i < childrenSize; i++)
-      this->children->at(i)->printSourceCode("");
+			this->children->at(i)->printSourceCode(";\n");
 
-    block->printSourceCode("");
+		block->printSourceCode("\n");
   }
 }

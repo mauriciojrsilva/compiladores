@@ -1,22 +1,37 @@
 #include "node.h"
 #include <iostream>
 
-Node::Node(): flexOut(yyout) {
-  this->children = new std::vector<Node*>();
+Node::Node(): parent(NULL), flexOut(yyout) {
+  this->children = new std::vector<Node*>();	
 }
 
-Node::Node(const std::string& name): name(name), flexOut(yyout) {
-  this->children = new std::vector<Node*>();
+Node::Node(const std::string& name): name(name), parent(NULL), flexOut(yyout) {
+  this->children = new std::vector<Node*>();	
 }
 
-Node::Node(const std::string& name, std::vector<Node*>* children): name(name), children(children), flexOut(yyout) {}
+Node::Node(const std::string& name, std::vector<Node*>* children): name(name), children(children), parent(NULL), flexOut(yyout) {
+	for (std::vector<Node*>::iterator it = this->children->begin(); it != this->children->end(); it++)
+		(*it)->setParent(this);
+}
 
 void Node::addChild(Node* child) {
 	this->children->push_back(child);
+	child->setParent(this);
 }
 
-void Node::addChildren(std::vector<Node *> *children) {
-	this->children->insert(this->children->end(), children->begin(), children->end());
+void Node::addChildren(std::vector<Node*>* children) {
+	for (std::vector<Node*>::iterator it = children->begin(); it != children->end(); it++) {
+		this->children->push_back((*it));
+		(*it)->setParent(this);
+	}
+}
+
+Node* Node::getParent() const {
+	return this->parent;
+}
+
+void Node::setParent(Node* parent) {
+	this->parent = parent;
 }
 
 void Node::print(int level) {

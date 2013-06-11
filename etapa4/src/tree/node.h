@@ -15,13 +15,16 @@ public:
   Node(const std::string& name, std::vector<Node*>* children);
 	void addChild(Node* child);
   void addChildren(std::vector<Node*>* children);
-  void print(int level);
+	Node* getParent() const;
+	void setParent(Node* parent);
+	void print(int level);
   virtual void printSourceCode(const std::string& end) = 0;
 
-protected:  
-  std::string dataTypeToString(const Common::DataType& dataType);
+protected:
+	std::string dataTypeToString(const Common::DataType& dataType);
   std::string name;
   std::vector<Node*>* children;
+	Node* parent;
   FILE* flexOut;
 	//Symbol* symbol;
 

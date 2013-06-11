@@ -22,6 +22,7 @@ public:
 
 protected:
 	std::string dataTypeToString(const Common::DataType& dataType);
+	std::string operationTypeToString(const Common::OperationType& operationType);
   std::string name;
   std::vector<Node*>* children;
 	Node* parent;

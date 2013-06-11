@@ -60,6 +60,39 @@ std::string Node::dataTypeToString(const Common::DataType& dataType) {
   return "ERROR!";
 }
 
+std::string Node::operationTypeToString(const Common::OperationType& operationType) {
+	switch (operationType) {
+	case Common::OP_SUM:
+		return "+";
+	case Common::OP_SUB:
+		return "-";
+	case Common::OP_MULT:
+		return "*";
+	case Common::OP_DIV:
+		return "/";
+	case Common::OP_AND:
+		return "&&";
+	case Common::OP_OR:
+		return "||";
+	case Common::OP_LESS:
+		return "<";
+	case Common::OP_GREATER:
+		return ">";
+	case Common::OP_LE:
+		return "<=";
+	case Common::OP_GE:
+		return ">=";
+	case Common::OP_EQUAL:
+		return "==";
+	case Common::OP_NEQUAL:
+		return "!=";
+	default:
+		break;
+	}
+
+	return "ERROR!";
+}
+
 void Node::printSpaces(int level) {
   for (int i = 0; i < level; i++)
     std::cout << "  ";

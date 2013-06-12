@@ -1,7 +1,0 @@
-#ifndef ERROR_HANDLING_H
-#define ERROR_HANDLING_H
-
-#define SEM_IDENTIFICADOR 1
-#define IDENTIFICADOR_JA_DEFINIDO 2
-
-#endif

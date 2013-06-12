@@ -91,6 +91,8 @@ typedef std::vector<Node*> CommandList;
 %type <nodes> decl_local
 %type <node> decl_var
 %type <node> decl_vetor
+%type <node> decl_vetor_dimensao
+%type <node> decl_vetor_dimensao_tamanho
 %type <dataType> tipo_var
 %type <node> def_funcao
 %type <node> chamada_funcao
@@ -135,8 +137,16 @@ decl_local: decl_local decl_var ';' { $$->push_back($2); }
 decl_var: TK_IDENTIFICADOR ':' tipo_var { $$ = new VarDeclarationNode($1->getText(), $3); }
 	;
 
-decl_vetor: TK_IDENTIFICADOR ':' tipo_var '[' TK_LIT_INTEIRO ']' { $$ = new VectorDeclarationNode($1->getText(), $3, atoi($5->getText().c_str())); }
+decl_vetor: TK_IDENTIFICADOR ':' tipo_var decl_vetor_dimensao { $$ = new VectorDeclarationNode($1->getText(), $3, atoi($3->getText().c_str())); }
 	;
+
+decl_vetor_dimensao: '[' decl_vetor_dimensao_tamanho ']' decl_vetor_dimensao { $$ = $1; }
+        |
+        ;
+
+decl_vetor_dimensao_tamanho: TK_LIT_INTEIRO { $$ = $1; }
+        | expressao { $$ = $1; }
+        ;
 
 tipo_var: TK_PR_INTEIRO { $$ = Common::INT; }
 	| TK_PR_FLUTUANTE { $$ = Common::FLOAT; }

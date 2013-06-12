@@ -1,10 +1,10 @@
 %{
-#include "hash.h"
-#include "ast.h"
-#include "parser.h"
+#include "../tree/common.h"
+#include "../symbol.h"
+#include "../tree/node.h"
+#include "../parser/parser.hpp"
 
 int numeroLinha = 1;
-
 %}
 
 %x COMM
@@ -27,8 +27,8 @@ entrada { return TK_PR_ENTRADA;	}
 saida { return TK_PR_SAIDA;	}
 retorna { return TK_PR_RETORNA;	}
 
-"verdadeiro" { return TK_LIT_VERDADEIRO; }
-"falso" { return TK_LIT_FALSO; }
+"verdadeiro" { yylval.symbol = new Symbol(yytext, Common::LIT_BOOL); return TK_LIT_VERDADEIRO; }
+"falso" { yylval.symbol = new Symbol(yytext, Common::LIT_BOOL); return TK_LIT_FALSO; }
 
 "<=" { return TK_OC_LE; }
 ">=" { return TK_OC_GE; }
@@ -39,11 +39,11 @@ retorna { return TK_PR_RETORNA;	}
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"!"|"&"|"$" { return yytext[0];	}
 
-{letra}({letra}|{digito})* { yylval.symbol = hashElement_create(SIMBOLO_IDENTIFICADOR, yytext); return TK_IDENTIFICADOR; }
-{digito}+ { yylval.symbol = hashElement_create(SIMBOLO_LIT_INTEIRO, yytext); return TK_LIT_INTEIRO; }
-{digito}+"."{digito}+ { yylval.symbol = hashElement_create(SIMBOLO_LIT_FLUTUANTE, yytext); return TK_LIT_FLUTUANTE; }
-\'.\' { yylval.symbol = hashElement_create(SIMBOLO_LIT_CHAR, yytext); return TK_LIT_CARACTERE; }
-\"[^"]*\" { yylval.symbol = hashElement_create(SIMBOLO_LIT_CADEIA, yytext); return TK_LIT_CADEIA; }
+{letra}({letra}|{digito})* { yylval.symbol = new Symbol(yytext, Common::IDENTIFIER); return TK_IDENTIFICADOR; }
+{digito}+ { yylval.symbol = new Symbol(yytext, Common::LIT_INT); return TK_LIT_INTEIRO; }
+{digito}+"."{digito}+ { yylval.symbol = new Symbol(yytext, Common::LIT_FLOAT); return TK_LIT_FLUTUANTE; }
+\'.\' { yylval.symbol = new Symbol(yytext, Common::LIT_CHAR); return TK_LIT_CARACTERE; }
+\"[^"]*\" { yylval.symbol = new Symbol(yytext, Common::LIT_STRING); return TK_LIT_CADEIA; }
 
 "//".* {}
 

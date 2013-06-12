@@ -1,0 +1,10 @@
+variavel_flutuante : flutuante;
+variavel_inteira : inteiro;
+/* var : booleano; */
+variavel_caractere : caractere;
+minha_funcao : inteiro (k:flutuante, l:inteiro)
+{
+enquanto (a<9) saida "a=", a;
+a=5;
+p=a;
+}
